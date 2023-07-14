@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Hamara Bank - Login</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/login-page.css">
+<script type="text/javascript" src="./js/login-page.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</head>
+<body>
+	<div class="container">
+		<div id="content" class="col-md-4 offset-md-4">
+			<h1 class="form-group">Login</h1>
+			<form id="loginForm" class="mt-4" action="Test" method="POST">
+				<div class="form-group">
+					<label for="username">UserID</label> <input type="text"
+					id="id"	class="form-control" name="username"
+						placeholder="Enter your userID">
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label> <input type="password"
+						class="form-control" name="password"
+						placeholder="Enter your password">
+				</div>
+				<br>
+				<button type="submit" class="btn btn-primary btn-block" >Login</button>
+				<a href="enterEmail" id="forgotPassword">Forgot Password ?</a>
+			</form>
+			<br>
+			<b><p class="error-messages" id="errorMessages"></p></b>
+			<b><p class="error-message" id="errorMessage"
+				th:if="${session.errorMessage}" th:text="${session.errorMessage}"></p></b>
+		</div>
+	</div>
+
+	<script>
+
+	
+	
+	</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Permission Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .checkbox-group {
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="role">Select Designation:</label>
+        <select id="role" name="role">
+            <option value="user">User</option>
+            <option value="clerk">Clerks</option>
+            <option value="accountprocessing">Account Processing</option>
+            <option value="bankofficers">Bank Officers</option>
+        </select>
+	
+        <div id="textbox-container" style="display: none;">
+            <label for="userId">userId:</label>
+            <input type="text" id="userId" name="userId" />
+        </div>
+
+        <div class="checkbox-group">
+           
+            <label for="Accountedit">
+                <input type="checkbox" id="Accountedit" name="Accountedit" > Account Edit
+            </label>
+            <label for="Accountdel">
+                <input type="checkbox" id="Accountdel" name="Accountdel" > Account Delete
+            </label>
+            <label for="Accountactive">
+                <input type="checkbox" id="Accountactive" name="Accountactive" > Account Active
+            </label>
+            <label for="transactions">
+                <input type="checkbox" id="transactions" name="transactions" > Transactions
+            </label>
+            <label for="appforms">
+                <input type="checkbox" id="appforms" name="appforms" > App Forms
+            </label>
+            <label for="security">
+                <input type="checkbox" id="security" name="security" > Security
+            </label>
+            <label for="accprocessing">
+                <input type="checkbox" id="accprocessing" name="accprocessing" > Account Processing
+            </label>
+            <label for="cusedit">
+                <input type="checkbox" id="cusedit" name="cusedit" > Customer Edit
+            </label>
+            <label for="users">
+                <input type="checkbox" id="users" name="users" > Users
+            </label>
+             
+        </div>
+
+        <button id ="submit">Submit</button>
+    </form>
+
+    <script>
+        var roleDropdown = document.getElementById('role');
+        var textboxContainer = document.getElementById('textbox-container');
+
+        roleDropdown.addEventListener('change', function () {
+            if (roleDropdown.value === 'user') {
+                textboxContainer.style.display = 'block';
+            } else {
+                textboxContainer.style.display = 'none';
+            }
+        });
+		
+        
+        $(document).ready(function() {
+            $('#submit').click(function() {
+                var userId = $('#userId').val();
+                var role = $('#role').val();
+                var cashchest = $('#cashchest').is(':checked');
+                
+                console.log(cashchest);
+                
+                var Accountedit = $('#Accountedit').is(':checked');
+                var Accountdel = $('#Accountdel').is(':checked');
+                var Accountactive = $('#Accountactive').is(':checked');
+                var transactions = $('#transactions').is(':checked');
+                var appforms = $('#appforms').is(':checked');
+                var security = $('#security').is(':checked');
+                var accprocessing = $('#accprocessing').is(':checked');
+                var cusedit = $('#cusedit').is(':checked');
+                var users = $('#users').is(':checked');
+
+                if (userId) {
+                    // AJAX call with userId, role, and permission data
+                    $.ajax({
+                        url: 'permissionurl',
+                        method: 'POST',
+                        data: {
+                            userId: userId,
+                            role: role,
+                            cashchest: cashchest,
+                            Accountedit: Accountedit,
+                            Accountdel: Accountdel,
+                            Accountactive: Accountactive,
+                            transactions: transactions,
+                            appforms: appforms,
+                            security: security,
+                            accprocessing: accprocessing,
+                            cusedit: cusedit,
+                            users: users
+                        },
+                        success: function(response) {
+                            // Handle success response
+                        },
+                        error: function(error) {
+                            // Handle error response
+                        }
+                    });
+                } else {
+                    // AJAX call with role and permission data only
+                    $.ajax({
+                        url: 'allpermissionurl',
+                        method: 'POST',
+                        data: {
+                            role: role,
+                            cashchest: cashchest,
+                            Accountedit: Accountedit,
+                            Accountdel: Accountdel,
+                            Accountactive: Accountactive,
+                            transactions: transactions,
+                            appforms: appforms,
+                            security: security,
+                            accprocessing: accprocessing,
+                            cusedit: cusedit,
+                            users: users
+                        },
+                        success: function(response) {
+                            // Handle success response
+                        },
+                        error: function(error) {
+                            // Handle error response
+                        }
+                    });
+                }
+            });
+        });
+        
+        
+      
+    </script>
+</body>
+</html>
