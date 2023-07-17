@@ -16,8 +16,7 @@ public class Permission {
 	@Column(name = "role")
 	private String role;
 
-	@Column(name = "cashchest")
-	private boolean cashchest;
+	
 
 	@Column(name = "Accountedit")
 	private boolean Accountedit;
@@ -110,13 +109,6 @@ public class Permission {
 		return userId;
 	}
 
-	public boolean isCashchest() {
-		return cashchest;
-	}
-
-	public void setCashchest(boolean cashchest) {
-		this.cashchest = cashchest;
-	}
 
 	public boolean isAccountedit() {
 		return Accountedit;

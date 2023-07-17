@@ -71,58 +71,82 @@
         </div>
 
         <div class="checkbox-group">
-           
             <label for="Accountedit">
-                <input type="checkbox" id="Accountedit" name="Accountedit" > Account Edit
+                <input type="checkbox" id="Accountedit" name="Accountedit" th:checked="${permissions.Accountedit}"> Account Edit
             </label>
             <label for="Accountdel">
-                <input type="checkbox" id="Accountdel" name="Accountdel" > Account Delete
+                <input type="checkbox" id="Accountdel" name="Accountdel" th:checked="${permissions.Accountdel}"> Account Delete
             </label>
             <label for="Accountactive">
-                <input type="checkbox" id="Accountactive" name="Accountactive" > Account Active
+                <input type="checkbox" id="Accountactive" name="Accountactive" th:checked="${permissions.Accountactive}"> Account Active
             </label>
             <label for="transactions">
-                <input type="checkbox" id="transactions" name="transactions" > Transactions
+                <input type="checkbox" id="transactions" name="transactions" th:checked="${permissions.transactions}"> Transactions
             </label>
             <label for="appforms">
-                <input type="checkbox" id="appforms" name="appforms" > App Forms
+                <input type="checkbox" id="appforms" name="appforms" th:checked="${permissions.appforms}"> App Forms
             </label>
             <label for="security">
-                <input type="checkbox" id="security" name="security" > Security
+                <input type="checkbox" id="security" name="security" th:checked="${permissions.security}"> Security
             </label>
             <label for="accprocessing">
-                <input type="checkbox" id="accprocessing" name="accprocessing" > Account Processing
+                <input type="checkbox" id="accprocessing" name="accprocessing" th:checked="${permissions.accprocessing}"> Account Processing
             </label>
             <label for="cusedit">
-                <input type="checkbox" id="cusedit" name="cusedit" > Customer Edit
+                <input type="checkbox" id="cusedit" name="cusedit" th:checked="${permissions.cusedit}"> Customer Edit
             </label>
             <label for="users">
-                <input type="checkbox" id="users" name="users" > Users
+                <input type="checkbox" id="users" name="users" th:checked="${permissions.users}"> Users
             </label>
-             
         </div>
 
-        <button id ="submit">Submit</button>
+        <button id="submit">Submit</button>
     </form>
 
     <script>
-        var roleDropdown = document.getElementById('role');
-        var textboxContainer = document.getElementById('textbox-container');
+ var roleDropdown = document.getElementById('role');
+    var textboxContainer = document.getElementById('textbox-container');
+    var checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
 
-        roleDropdown.addEventListener('change', function () {
+    roleDropdown.addEventListener('change', function () {
+        if (roleDropdown.value === 'user') {
+            textboxContainer.style.display = 'block';
+        } else {
+            textboxContainer.style.display = 'none';
+        }
+
+        updateCheckboxes();
+    });
+
+    function updateCheckboxes() {
+        checkboxes.forEach(function (checkbox) {
             if (roleDropdown.value === 'user') {
-                textboxContainer.style.display = 'block';
+                checkbox.checked = false; // Uncheck all checkboxes for user role
+                checkbox.disabled = true; // Disable all checkboxes for user role
             } else {
-                textboxContainer.style.display = 'none';
+                checkbox.disabled = false; // Enable all checkboxes for other roles
+
+                // Check the checkboxes based on the selected role
+                var permissions = '${permissions}'.toLowerCase(); // Get the permissions from Thymeleaf
+
+                if (permissions.includes(checkbox.name)) {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false;
+                }
             }
         });
-		
-        
-        $(document).ready(function() {
+    }
+
+    $(document).ready(function() {
+        updateCheckboxes(); // Call the function initially to set the checkboxes based on the initial dropdown value
+
+
+			
             $('#submit').click(function() {
                 var userId = $('#userId').val();
                 var role = $('#role').val();
-                var cashchest = $('#cashchest').is(':checked');
+               
                 
                 console.log(cashchest);
                 
@@ -144,7 +168,6 @@
                         data: {
                             userId: userId,
                             role: role,
-                            cashchest: cashchest,
                             Accountedit: Accountedit,
                             Accountdel: Accountdel,
                             Accountactive: Accountactive,
@@ -169,7 +192,6 @@
                         method: 'POST',
                         data: {
                             role: role,
-                            cashchest: cashchest,
                             Accountedit: Accountedit,
                             Accountdel: Accountdel,
                             Accountactive: Accountactive,

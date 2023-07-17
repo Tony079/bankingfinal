@@ -54,7 +54,7 @@ public class PermissionController {
 	@ResponseBody
 	public ResponseEntity<String> idpermission(Permission permissions) {
 		LOGGER.info("Handling POST request for /permissionurl");
-		System.out.println("aaaaaaaaaaaaaaaa" + permissions);
+		System.out.println("single" + permissions);
 		permissionsDAO.updatePermissions(permissions);
 		return ResponseEntity.ok("Customer data updated successfully");
 	}
@@ -63,7 +63,7 @@ public class PermissionController {
 	@ResponseBody
 	public ResponseEntity<String> allpermission(Permission permissions) {
 		LOGGER.info("Handling POST request for /allpermissionurl");
-		System.out.println("aaaaaaaaaaaaaaaa" + permissions);
+		System.out.println("alllll" + permissions);
 		permissionsDAO.allUpdatePermissions(permissions);
 		return ResponseEntity.ok("Customer data updated successfully");
 	}

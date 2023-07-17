@@ -197,7 +197,7 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		System.out.println("@@#######$%%%%%$######################" + p.isCashchest());
+
 
 		model.addAttribute("permissions", p);
 
