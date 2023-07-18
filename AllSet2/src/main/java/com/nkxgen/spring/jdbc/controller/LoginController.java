@@ -1,6 +1,7 @@
 
 package com.nkxgen.spring.jdbc.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.nkxgen.spring.jdbc.DaoInterfaces.AuditLogDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
 import com.nkxgen.spring.jdbc.Exception.EmailNotFoundException;
 import com.nkxgen.spring.jdbc.ViewModels.GraphModel;
 import com.nkxgen.spring.jdbc.events.LoginEvent;
 import com.nkxgen.spring.jdbc.events.LogoutEvent;
+import com.nkxgen.spring.jdbc.model.AuditLogs;
 import com.nkxgen.spring.jdbc.model.LoginModel;
 import com.nkxgen.spring.jdbc.model.Permission;
 import com.nkxgen.spring.jdbc.service.ChartService;
@@ -34,7 +37,8 @@ import com.nkxgen.spring.jdbc.validation.MailSender;
 public class LoginController {
 
 	private final PermissionsDAOInterface permissionsDAO;
-
+	private AuditLogDAO auditLogDAO;
+	
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	private MailSender mailSender;
@@ -47,14 +51,14 @@ public class LoginController {
 	@Autowired
 	public LoginController(ApplicationEventPublisher applicationEventPublisher, HttpSession httpSession,
 			MailSender mailSender, BankUserInterface bankUserService, ChartService chartService,
-			PermissionsDAOInterface permissionsDAO) {
+			PermissionsDAOInterface permissionsDAO,AuditLogDAO auditLogDAO) {
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.httpSession = httpSession;
 		this.mailSender = mailSender;
 		this.bankUserService = bankUserService;
 		this.chartService = chartService;
 		this.permissionsDAO = permissionsDAO;
-
+	    this.auditLogDAO = auditLogDAO;
 	}
 
 	@RequestMapping(value = "/graphs", method = RequestMethod.GET)
@@ -198,7 +202,10 @@ public class LoginController {
 		String username = (String) session.getAttribute("username");
 		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
 
-
+		AuditLogs lastLoggedinList = auditLogDAO.lastLoggedIn(username);
+		
+		System.out.println("lastloggedinnnnnnnnnnnnnnnnnnn"+lastLoggedinList.getTimestamp());
+		
 		model.addAttribute("permissions", p);
 
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -215,7 +222,7 @@ public class LoginController {
 		// Publish a LoginEvent with the username
 		logger.info("Publishing LoginEvent for user: {}", username);
 		applicationEventPublisher.publishEvent(new LoginEvent("Logged In", username));
-
+		model.addAttribute(lastLoggedinList);
 		return "bank-home-page"; // Return the view name "bank-home-page" to render the page
 	}
 

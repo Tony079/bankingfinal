@@ -9,4 +9,6 @@ public interface AuditLogDAO {
 	void saveAudit(AuditLogs auditLogs);
 
 	List<AuditLogs> getAllAuditLogs();
+
+	 AuditLogs  lastLoggedIn(String userid);
 }

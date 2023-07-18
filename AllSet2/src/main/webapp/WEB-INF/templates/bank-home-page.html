@@ -30,8 +30,13 @@
 					<h1>Hamara Bank</h1>
 					<p>&nbsp India's Largest Banking Platform</p>
 				</div>
+			
 				<div id="user-info">
-					<span th:text="'Hey ' + ${username}+', '" id="id"></span> <a href="logOut"
+					<div>
+        <span style="padding-right: 20px;">Last logged in:</span><br>
+        <span style="padding-right: 20px;" th:text="${lastLoggedinList.getTimestamp()}"></span>
+    </div>
+					<span th:text="'   Hey ' + ${username}+', '" id="id"></span> <a href="logOut"
 						id="logout-link">&nbsp Logout</a>
 				</div>
 			</header>

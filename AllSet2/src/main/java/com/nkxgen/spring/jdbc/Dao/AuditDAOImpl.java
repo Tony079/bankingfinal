@@ -44,4 +44,24 @@ public class AuditDAOImpl implements AuditLogDAO {
         LOGGER.info("Retrieved {} audit logs", auditLogsList.size());
         return auditLogsList;
     }
+    
+    @Transactional
+    public AuditLogs lastLoggedIn(String userid) {
+        LOGGER.info("Retrieving all last logged in logs");
+
+        // Create a typed query to retrieve all audit logs from the database, ordered by ID in descending order
+        TypedQuery<AuditLogs> query = entityManager.createQuery("SELECT a FROM AuditLogs a WHERE a.username = :userid ORDER BY a.id DESC ", AuditLogs.class);
+        query.setParameter("userid", userid);
+        query.setMaxResults(1); // Set the maximum number of results to 1
+        // Execute the query and return the list of audit logs
+        AuditLogs lastLoggedinList =  query.getSingleResult();
+
+//        LOGGER.info("Retrieved {} audit logs", ((List<AuditLogs>) lastLoggedinList).size());
+        return lastLoggedinList;
+    }
+
+
+
+
+	
 }
