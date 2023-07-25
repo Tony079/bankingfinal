@@ -3,7 +3,6 @@
 <head>
     <title>Hamara Bank - Send OTP</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="./css/spinner.css">
     <link rel="stylesheet" type="text/css" href="./css/enter-email.css">
 </head>
 <body>
@@ -24,89 +23,12 @@
             </form>
             <br>
             <!-- Add a section to display the message -->
-            <div id="message" class="mt-3"></div>
-        </div>
-    </div>
-
-    <div id="spinner" class="spinner-overlay">
-        <div class="lds-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+            <div th:if="${session.message}">
+                <p th:text="${session.message}"></p>
+            </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Show the spinner
-            $("#spinner").show();
 
-            // AJAX call to retrieve graph data from the controller
-            $.ajax({
-                type: "POST",
-                url: "getGraphData",
-                success: function(data) {
-                    $("#spinner").hide();
-                },
-                error: function() {
-                    $("#spinner").hide();
-                }
-            });
-
-            // Set a timer to hide the spinner after 10 seconds (if the graphs are not loaded)
-            setTimeout(function() {
-                $("#spinner").hide();
-            }, 10000);
-
-            // Submit form handler
-            $("#otpForm").submit(function(event) {
-                event.preventDefault();
-
-                var userID = $("#userID").val();
-                var email = $("#email").val();
-
-                // Show the spinner
-                $("#spinner").show();
-
-                // Make AJAX request to send OTP
-                $.ajax({
-                    type: "POST",
-                    url: "enterOtp",
-                    data: {
-                        userID: userID,
-                        email: email
-                    },
-                    success: function(response) {
-                        // Handle success response
-
-                        // Hide the spinner
-                        $("#spinner").hide();
-
-                        // Display the message
-                        $("#message").html("<p>" + response.message + "</p>");
-                    },
-                    error: function(error) {
-                        // Handle error response
-
-                        // Hide the spinner
-                        $("#spinner").hide();
-
-                        // Display the error message
-                        $("#message").html("<p>Error occurred. Please try again.</p>");
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>

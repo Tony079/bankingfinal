@@ -1,7 +1,6 @@
 
 package com.nkxgen.spring.jdbc.controller;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +37,7 @@ public class LoginController {
 
 	private final PermissionsDAOInterface permissionsDAO;
 	private AuditLogDAO auditLogDAO;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	private MailSender mailSender;
@@ -51,14 +50,14 @@ public class LoginController {
 	@Autowired
 	public LoginController(ApplicationEventPublisher applicationEventPublisher, HttpSession httpSession,
 			MailSender mailSender, BankUserInterface bankUserService, ChartService chartService,
-			PermissionsDAOInterface permissionsDAO,AuditLogDAO auditLogDAO) {
+			PermissionsDAOInterface permissionsDAO, AuditLogDAO auditLogDAO) {
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.httpSession = httpSession;
 		this.mailSender = mailSender;
 		this.bankUserService = bankUserService;
 		this.chartService = chartService;
 		this.permissionsDAO = permissionsDAO;
-	    this.auditLogDAO = auditLogDAO;
+		this.auditLogDAO = auditLogDAO;
 	}
 
 	@RequestMapping(value = "/graphs", method = RequestMethod.GET)
@@ -203,9 +202,10 @@ public class LoginController {
 		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
 
 		AuditLogs lastLoggedinList = auditLogDAO.lastLoggedIn(username);
-		
-		System.out.println("lastloggedinnnnnnnnnnnnnnnnnnn"+lastLoggedinList.getTimestamp());
-		
+		model.addAttribute("lastLoggedinList", lastLoggedinList);
+
+		System.out.println("lastloggedinnnnnnnnnnnnnnnnnnn" + lastLoggedinList.getTimestamp());
+
 		model.addAttribute("permissions", p);
 
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");

@@ -128,7 +128,7 @@ public class AccountController {
 		model.addAttribute("list_of_account", list1);
 		model.addAttribute("list_of_customer", list2);
 		model.addAttribute("permissions", p);
-		System.out.println("/*************/" + p.isCashchest());
+
 		// Return the view name "Any_Type_account_info" to render the page
 		return "any-type-account-info";
 		// } else {
@@ -279,7 +279,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/getAccountById", method = RequestMethod.POST)
-	public String getAccountById(@RequestParam("Data") int accountId, Model model) {
+	public String getAccountById(@RequestParam("Data") int accountId, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
 		try {
 			AccountViewModel account = v.getAccountById(accountId);
 			List<AccountViewModel> list1 = new ArrayList<AccountViewModel>();
@@ -289,9 +290,15 @@ public class AccountController {
 			// Add the retrieved customer to the list of Customertrail objects
 			list1.add(account);
 			list2.add(customer);
+			HttpSession session = request.getSession();
+
+			// Get the username attribute from the session
+			String username = (String) session.getAttribute("username");
+			Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
 			LOGGER.info("Account found");
 			model.addAttribute("list_of_account", list1);
 			model.addAttribute("list_of_customer", list2);
+			model.addAttribute("permissions", p);
 			return "any-type-account-info";
 		} catch (AccountNotFound e) {
 			LOGGER.warn(e.getMessage());

@@ -178,51 +178,6 @@ public class CustomerSetter {
 
 	public static int pastdue(long LoanId, double damount, double lamount, int duration, double ir, String typee) {
 
-		// // System.out.println("++++++++++++++++++++++++++++++++++++++++");
-		// LoanAccount account=new LoanAccount();
-		// try {
-		// account = ti.getLoanAccountById((long) LoanId);
-		// } catch (LoanAccountNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// System.out.println("the account name is:" + account.getLoanAmount());
-		// //
-		// LoanApplication Application = new LoanApplication();
-		// try {
-		// Application = ti.getLoanAccountApplicationById(account.getloanappId());
-		// } catch (LoanAccountApplicationNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// System.out.println("the processed date is :" + Application.getCreatedDate());
-		// //
-		// System.out.println("++++++-------------------------");
-		// // String startDateString = (String) account.getProcessDate();
-		//
-		// // System.out.println(account.getProcessDate());
-		// // String endDateString = LocalDate.now().toString();
-		//
-		// // String startDateString = Application.getApplicationDate();
-		// // String endDateString = "2023-06-29";
-		//
-		// LocalDate startDate = LocalDate.parse(Application.getApplicationDate());
-		// LocalDate endDate = LocalDate.now();
-		//
-		// int pm = calPM(damount, lamount, duration);
-		//
-		// // Calculate the difference in months
-		// Period period = Period.between(startDate, endDate);
-		// int months = period.getYears() * 12 + period.getMonths();
-		//
-		// int pereachmonth = total(lamount, duration, ir, damount, typee);
-		//
-		// int pastduee = months - pm;
-		// pastduee = pastduee * pereachmonth;
-		// // System.out.println("Number of months between the two dates: " + months);
-		//
-		// return pastduee;
-
 		LoanAccount account = new LoanAccount();
 		try {
 			account = ti.getLoanAccountById((long) LoanId);
@@ -241,27 +196,34 @@ public class CustomerSetter {
 			e.printStackTrace();
 		}
 
-		System.out.println("the processed date is :" + Application.getCreatedDate());
-
 		String startDateString = (String) Application.getProcessDate();
+		System.out.println("the processed date after converted to string :" + startDateString);
 
 		LocalDate endDate = LocalDate.now();
 
 		LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE);
 
-		int pm = calPM(damount, lamount, duration);
-
 		// Calculate the difference in months
 		Period period = Period.between(startDate, endDate);
+
 		int months = period.getYears() * 12 + period.getMonths();
-		months = months - 1;
-		int pereachmonth = total(lamount, duration, ir, damount, typee);
+		/**/
+		System.out.println("number of months " + months);
+		int pm = calPM(damount, lamount, duration);
+		if (months == 0 || pm == months) {
+			return 0;
+		} else {
+			// int pm = calPM(damount, lamount, duration);
 
-		int pastduee = months - pm;
-		pastduee = pastduee * pereachmonth;
-		// System.out.println("Number of months between the two dates: " + months);
+			months = months - 1;
+			int pereachmonth = total(lamount, duration, ir, damount, typee);
 
-		return pastduee;
+			int pastduee = months - pm;
+			pastduee = pastduee * pereachmonth;
+
+			return pastduee;
+		}
+
 	}
 
 	public static int totalwithpenalty(long loanId, double lamount, int duration, double ir, double damount,

@@ -69,7 +69,7 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 	        LOGGER.info("Entering getAccountsByType method. Account type ID: {}", acnt_acty_id);
 
 	        // Create a JPQL query to select Account objects based on the given account type ID
-	        String jpql = "SELECT la FROM Account la WHERE la.accountTypeId = :acnt_acty_id";
+	        String jpql = "SELECT la FROM Account la WHERE la.accountTypeId = :acnt_acty_id order by la.accountId asc";
 	        TypedQuery<Account> query = entityManager.createQuery(jpql, Account.class);
 
 	        // Set the acnt_acty_id parameter in the query

@@ -20,6 +20,7 @@ import com.nkxgen.spring.jdbc.Bal.CustomerSetter;
 import com.nkxgen.spring.jdbc.Bal.ViewInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
+import com.nkxgen.spring.jdbc.Exception.CustomerNotFoundException;
 import com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel;
 import com.nkxgen.spring.jdbc.model.Customer;
 import com.nkxgen.spring.jdbc.model.CustomerSub;
@@ -141,6 +142,20 @@ public class customercontroller {
 
 		// Return the view name "Any_Type_account_info" to render the page
 		return "any-type-account-info";
+	}
+
+	@RequestMapping(value = "/getCustoemrByIdForFilter", method = RequestMethod.POST)
+	public String getAccountById(@RequestParam("Data") int customerId, Model model, HttpServletRequest request,
+			HttpServletResponse response) throws CustomerNotFoundException {
+		List<Customer> customerList = v.getAllCustomersByid((long) customerId);
+		HttpSession session = request.getSession();
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		model.addAttribute(customerList);
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+
+		model.addAttribute("permissions", p);
+		return "customer-edit-details-form";
 	}
 
 }

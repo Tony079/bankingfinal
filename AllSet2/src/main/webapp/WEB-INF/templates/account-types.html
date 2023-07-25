@@ -1,36 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bank Account Selection</title>
-<!-- Include Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <title>Bank Account Selection</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-<link rel="stylesheet" type="text/css" href="./css/account-types.css">
-<script type="text/javascript" src="./js/account-types.js"></script>
+  <!-- Custom CSS for decreasing the dropdown size and other styles -->
+  <style>
+    /* Custom CSS for decreasing the dropdown size */
+    #accountType {
+      height: 40px;
+      width: 200px;  /* Adjust the height as needed */
+    }
+
+    /* Additional custom styles */
+    .mybody {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      padding: 20px;
+    }
+    .calculate-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .calculate-button:hover {
+      background-color: #0056b3;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 250px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      width: 250px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    /* Optional custom styling for the button */
+    .hide {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .hide:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 
+<body class="mybody">
+  <div class="container" id="co">
+    <div class="form-group">
+      <label for="accountType">Account Type:</label>
+      <select class="form-control" id="accountType" onchange="submitAccountType()">
+        <option value="savings">Savings Account</option>
+        <option value="fixed">Fixed Deposit</option>
+        <option value="recurrent">Recurring Deposit</option>
+      </select>
+    </div>
+    <div class="center">
+    <button class="calculate-button" onclick="submit()">Calculate Interest</button>
+  </div>
+  </div>
+   <div class="row" id="row"></div>
+  
 
-<div class="container" id=" co">
-	<h1>Select Account Type</h1>
-	<div class="form-group">
-		<label for="accountType">Account Type:</label> <select
-			class="form-control" id="accountType" onchange="submitAccountType()">
-			<option value="savings">Savings Account</option>
-			<option value="fixed">Fixed Deposit</option>
-			<option value="recurrent">Recurring Deposit</option>
-		</select>
-	</div>
-</div>
-<div class="row" id="row"></div>
-<div class="center">
-	<button class="hide" id="id" onclick="submit()">Calculate
-		Interest</button>
-</div>
-<!-- Include Bootstrap JS -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- Include Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-
+  <script type="text/javascript" src="./js/account-types.js"></script>
+</body>
 
 </html>

@@ -2,25 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <link rel="stylesheet" type="text/css"
-	href="./css/customer-edit-details-form.css">
+		href="./css/any-type-account-info.css">
+
 <script type="text/javascript" src="./js/customer-edit-details-form.js"></script>
 
 </head>
 <body>
-	<h2>Customer Details</h2>
+<h2 style="text-align: center;">Customer Details</h2>
+
+<div class="filter-container">
+			<input type="text" id="CustomerFilter" placeholder="Enter Customer Number" >
+			<button onclick="filterCustomers()">submit</button>
+		</div>
+	
 	<table>
 		<thead>
 			<tr>
-				<th>cust_id</th>
-				<th>cust_title</th>
-				<th>cust_type</th>
-				<th>cust_caddress</th>
-				<th>cust_capincode</th>
-				<th>cust_dob</th>
-				<th>cust_mobile1</th>
-				<th>cust_mobile2</th>
-				<th>cust_rphone</th>
-				<th>cust_raddress</th>
+				<th>Customer Id</th>
+				<th>Title</th>
+				<th>Customer Type</th>
+				<th>Current Address</th>
+				<th>Pin Code</th>
+				<th>DOB</th>
+				<th>Mobile No.1</th>
+				<th>Mobile No.2</th>
+				<th>Land Line</th>
+				<th>permanent address</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -43,7 +50,7 @@
 				<td data-column="cust_raddress"
 					th:text="${customer.getResidenceAddress()}"></td>
 				<td>
-					<button  th:class="${permissions.isCusedit()  ? 'edit-button btn' : 'disabled-button btn'}" th:disabled="${not permissions.isCusedit()}" onclick="editRow(this)">Edit</button>
+					<button th:class="${permissions.isCusedit()  ? 'edit-button btn' : 'disabled-button btn'}" th:disabled="${not permissions.isCusedit()}" onclick="editRow(this)">Edit</button>
 
 				</td>
 			</tr>
@@ -53,30 +60,49 @@
 	<div class="form-popup" id="editForm">
 		<div class="form-container">
 			<h2>Edit Customer</h2>
-			<label for="edit_cust_id">cust_id:</label> <input type="text"
+			<label for="edit_cust_id">Customer Id:</label> <input type="text"
 				id="edit_cust_id" name="edit_cust_id" readonly> <label
-				for="edit_cust_title">cust_title:</label> <input type="text"
+				for="edit_cust_title">Name:</label> <input type="text"
 				id="edit_cust_title" name="edit_cust_title"> <label
-				for="edit_cust_type">cust_type:</label> <input type="text"
+				for="edit_cust_type">customer Type:</label> <input type="text"
 				id="edit_cust_type" name="edit_cust_type"> <label
-				for="edit_cust_caddress">cust_caddress:</label> <input type="text"
+				for="edit_cust_caddress">Current Address:</label> <input type="text"
 				id="edit_cust_caddress" name="edit_cust_caddress"> <label
-				for="edit_cust_capincode">cust_capincode:</label> <input type="text"
+				for="edit_cust_capincode">Current Area Pin Code:</label> <input type="text"
 				id="edit_cust_capincode" name="edit_cust_capincode"> <label
-				for="edit_cust_dob">cust_dob:</label> <input type="text"
+				for="edit_cust_dob">Date of Birth:</label> <input type="Date"
 				id="edit_cust_dob" name="edit_cust_dob"> <label
-				for="edit_cust_mobile1">cust_mobile1:</label> <input type="text"
+				for="edit_cust_mobile1">Mobile No1:</label> <input type="text"
 				id="edit_cust_mobile1" name="edit_cust_mobile1"> <label
-				for="edit_cust_mobile2">cust_mobile2:</label> <input type="text"
+				for="edit_cust_mobile2">Mobile No2:</label> <input type="text"
 				id="edit_cust_mobile2" name="edit_cust_mobile2"> <label
-				for="edit_cust_rphone">cust_rphone:</label> <input type="text"
+				for="edit_cust_rphone">Land Line:</label> <input type="text"
 				id="edit_cust_rphone" name="edit_cust_rphone"> <label
-				for="edit_cust_raddress">cust_raddress:</label> <input type="text"
+				for="edit_cust_raddress">Permanent address:</label> <input type="text"
 				id="edit_cust_raddress" name="edit_cust_raddress">
-			<button type="button" onclick="updateRow()">update</button>
-			<button type="button" onclick="closeForm()">close</button>
+			<button   onclick="updateRow()">update</button>
+			<button  onclick="closeForm()">close</button>
 		</div>
 	</div>
 
 </body>
+<script>
+function filterCustomers(){
+	var mainContent = $('#main-content');
+	var val = document.getElementById('CustomerFilter').value;
+    console.log(val);
+$.ajax({
+		url: 'getCustoemrByIdForFilter',
+		type: 'POST',
+		data: {Data:val},
+		success: function(response) {
+		mainContent.html(response);
+					},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle the error
+			console.error('Third server request error:', textStatus, errorThrown);
+		}
+	});
+
+}</script>
 </html>

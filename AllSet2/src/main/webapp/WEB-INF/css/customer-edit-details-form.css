@@ -54,13 +54,7 @@ th {
 	box-sizing: border-box;
 }
 
-.form-container button {
-	padding: 8px 16px;
-	border: none;
-	background-color: #4CAF50;
-	color: #fff;
-	cursor: pointer;
-}
+
 
 .form-container button:hover {
 	background-color: #45a049;

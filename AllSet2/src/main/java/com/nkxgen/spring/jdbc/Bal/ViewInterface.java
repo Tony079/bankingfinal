@@ -2,9 +2,6 @@ package com.nkxgen.spring.jdbc.Bal;
 
 import java.util.List;
 
-
-import javax.security.auth.login.AccountNotFoundException;
-
 import com.nkxgen.spring.jdbc.Exception.AccountNotFound;
 import com.nkxgen.spring.jdbc.Exception.ApplicationNotFound;
 import com.nkxgen.spring.jdbc.InputModels.BankUserInput;
@@ -50,6 +47,8 @@ public interface ViewInterface {
 
 	List<AccountTypeView> set11();
 
+	List<Customer> getAllCustomersByid(long id);
+
 	List<Account> checkdate(List<Account> l);
 
 	List<Account> checkdates(List<Account> l);
@@ -61,4 +60,5 @@ public interface ViewInterface {
 	AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound;
 
 	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound;
+
 }
