@@ -143,7 +143,7 @@ public class CustomerSetter {
 			return 0;
 		} else {
 			double value1 = (lamount / (duration * 12));
-			return value1;
+			return Math.round(value1 * 100) / 100.0f;
 		}
 	}
 
@@ -156,13 +156,13 @@ public class CustomerSetter {
 			String s2 = "Personal";
 			if (s1.equals(s2)) {
 				double value1 = ((lamount * duration * ir) / (100 * 12 * duration));
-				return value1;
+				return Math.round(value1 * 100) / 100.0f;
 			} else {
 				int n = (12 * duration);
 				double r = (ir / 1200);
 				double value = lamount * r * (Math.pow((1 + r), n)) / (Math.pow((1 + r), n) - 1);
 				double value1 = value - (lamount / (duration * 12));
-				return value1;
+				return Math.round(value1 * 100) / 100.0f;
 			}
 
 		}

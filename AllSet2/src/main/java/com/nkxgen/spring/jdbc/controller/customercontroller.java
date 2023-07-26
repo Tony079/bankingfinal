@@ -22,6 +22,7 @@ import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
 import com.nkxgen.spring.jdbc.Exception.CustomerNotFoundException;
 import com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.Customer;
 import com.nkxgen.spring.jdbc.model.CustomerSub;
 import com.nkxgen.spring.jdbc.model.Customertrail;
@@ -32,15 +33,17 @@ public class customercontroller {
 
 	private PermissionsDAOInterface permissionsDAO;
 
-	@Autowired
 	private CustomerDaoInterface cd;
-	@Autowired
-	ViewInterface v;
+	private ViewInterface v;
+	private BankUser bankUser;
 
-	public customercontroller(ViewInterface v, CustomerDaoInterface cd, PermissionsDAOInterface permissionsDAO) {
+	@Autowired
+	public customercontroller(ViewInterface v, CustomerDaoInterface cd, PermissionsDAOInterface permissionsDAO,
+			BankUser bankUser) {
 		this.cd = cd;
 		this.v = v;
 		this.permissionsDAO = permissionsDAO;
+		this.bankUser = bankUser;
 	}
 
 	Logger LOGGER = LoggerFactory.getLogger(customercontroller.class);
@@ -109,8 +112,8 @@ public class customercontroller {
 		// Add the customerList as an attribute to the model
 		model.addAttribute("customerList", customerList);
 
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		model.addAttribute("permissions", p);
 		// Return the view name "customer_edit_details_form" to render the page
 		return "customer-edit-details-form";
@@ -152,8 +155,8 @@ public class customercontroller {
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
 		model.addAttribute(customerList);
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		model.addAttribute("permissions", p);
 		return "customer-edit-details-form";
 	}

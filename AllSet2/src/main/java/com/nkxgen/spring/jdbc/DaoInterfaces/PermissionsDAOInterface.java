@@ -5,11 +5,11 @@ import com.nkxgen.spring.jdbc.model.Permission;
 
 public interface PermissionsDAOInterface {
 
-    void updatePermissions(Permission permissions);
+	void allUpdatePermissions(Permission permissions);
 
-    void allUpdatePermissions(Permission permissions);
+	Permission getPermissions(String role);
 
-    Permission getPermissions(Long id);
+	BankUser getUserById(long id);
 
-    BankUser getUserById(int id);
+	void updatePermissions(Permission permissionData);
 }

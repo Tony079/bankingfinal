@@ -1,8 +1,5 @@
 package com.nkxgen.spring.jdbc.model;
 
-
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,46 +11,44 @@ import javax.persistence.Table;
 @Table(name = "audit_logs")
 public class AuditLogs {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "event")
-    private String event;
+	@Column(name = "event")
+	private String event;
 
-    @Column(name = "timestamp")
-    private Timestamp timestamp;
+	@Column(name = "timestamp")
+	private String timestamp;
 
-    
-    private String username;
+	private String username;
 
-    public AuditLogs() {
-    }
+	public AuditLogs() {
+	}
 
-    public AuditLogs(String event, Timestamp timestamp, String username) {
-        this.event = event;
-        this.timestamp = timestamp;
-        this.username = username;
-    }
+	public AuditLogs(String event, String timestamp, String username) {
+		this.event = event;
+		this.timestamp = timestamp;
+		this.username = username;
+	}
 
+	// Getters and Setters
 
-    // Getters and Setters
+	public String getEvent() {
+		return event;
+	}
 
-    public String getEvent() {
-        return event;
-    }
+	public void setEvent(String event) {
+		this.event = event;
+	}
 
-    public void setEvent(String event) {
-        this.event = event;
-    }
+	public String getTimestamp() {
+		return timestamp;
+	}
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
 
 	public Long getId() {
 		return id;
@@ -76,7 +71,4 @@ public class AuditLogs {
 		return "AuditLogs [id=" + id + ", event=" + event + ", timestamp=" + timestamp + ", username=" + username + "]";
 	}
 
-
-
-   
 }

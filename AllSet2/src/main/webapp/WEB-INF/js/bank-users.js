@@ -1,4 +1,8 @@
 function saveData(busr_id) {
+	
+    $("#spinner").show(); // Show the spinner overlay
+
+    
 	var busr_title = $("#busr_title-" + busr_id).val();
 	var busr_desg = $("#busr_desg-" + busr_id).val();
 	var busr_email = $("#busr_email-" + busr_id).val();
@@ -27,6 +31,8 @@ function saveData(busr_id) {
 			// Hide the Save Changes and Cancel buttons, and show the OK button
 			saveChangesBtn.hide();
 			cancelBtn.hide();
+            $("#spinner").hide(); // Show the spinner overlay
+
 			okBtn.show();
 
 			// Change OK button color to black
@@ -39,6 +45,8 @@ function saveData(busr_id) {
 		},
 		error: function(xhr, status, error) {
 			console.log("Error occurred while saving form data");
+            $("#spinner").hide(); // Show the spinner overlay
+
 		}
 	});
 }

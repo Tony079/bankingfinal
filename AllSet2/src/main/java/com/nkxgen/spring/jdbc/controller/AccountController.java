@@ -35,6 +35,7 @@ import com.nkxgen.spring.jdbc.events.AccountAppRequestEvent;
 import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.AccountApplication;
 import com.nkxgen.spring.jdbc.model.Accountdocument;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.Permission;
 
@@ -44,20 +45,22 @@ public class AccountController {
 	Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
-	ApplicationEventPublisher applicationEventPublisher;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	private final AccountApplicationDaoInterface ac;
 	private final ViewInterface v;
 	private final PermissionsDAOInterface permissionsDAO;
 	private final CustomerDaoInterface cd;
+	private BankUser bankUser;
 
 	@Autowired
 	public AccountController(AccountApplicationDaoInterface ac, ViewInterface v, PermissionsDAOInterface permissionsDAO,
-			CustomerDaoInterface cd) {
+			CustomerDaoInterface cd, BankUser bankUser) {
 		this.ac = ac;
 		this.v = v;
 		this.permissionsDAO = permissionsDAO;
 		this.cd = cd;
+		this.bankUser = bankUser;
 	}
 
 	// The @RequestMapping annotation maps the /New_account_application URL to the getAccountApplicationByType method,
@@ -75,12 +78,13 @@ public class AccountController {
 		HttpSession session = request.getSession();
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 
 		// Check if the list is not empty before accessing the first object
 		// if (p.isApplication()) {
 		for (AccountApplicationViewModel l : list1) {
-			if (l.getProcessedBy() == p.getUserId()) {
+			if (l.getProcessedBy() == Integer.parseInt(username)) {
 				list.add(l);
 			}
 		}
@@ -108,7 +112,8 @@ public class AccountController {
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		// Create an empty list to store Customertrail objects
 		List<Customertrail> list2 = new ArrayList<>();
 
@@ -294,7 +299,8 @@ public class AccountController {
 
 			// Get the username attribute from the session
 			String username = (String) session.getAttribute("username");
-			Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+			bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+			Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 			LOGGER.info("Account found");
 			model.addAttribute("list_of_account", list1);
 			model.addAttribute("list_of_customer", list2);

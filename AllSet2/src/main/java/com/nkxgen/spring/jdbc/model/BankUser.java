@@ -25,7 +25,7 @@ public class BankUser {
 	private String busr_desg;
 	private String busr_email;
 
-	private String busr_pwd = "pennant@123";
+	private String busr_pwd = "pennantR@123";
 
 	// Getters and setters
 	@OneToMany(mappedBy = "createdByUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

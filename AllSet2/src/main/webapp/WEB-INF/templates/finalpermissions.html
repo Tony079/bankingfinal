@@ -1,220 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Permission Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<title>Permission Form</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+}
 
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+form {
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
+label {
+	display: block;
+	margin-bottom: 10px;
+	font-size: 14px;
+	font-weight: bold;
+}
 
-        select,
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
+select, input[type="text"] {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
+}
 
-        .checkbox-group {
-            margin-bottom: 10px;
-        }
+.checkbox-group {
+	margin-bottom: 10px;
+}
 
-        .checkbox-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
+.checkbox-group label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 14px;
+}
 
-        button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            width: auto;
-        }
-    </style>
+button[type="submit"] {
+	background-color: #003366;
+	color: white;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 14px;
+	width: auto;
+}
+</style>
 </head>
 <body>
-    <form>
-        <label for="role">Select Designation:</label>
-        <select id="role" name="role">
-            <option value="user">User</option>
-            <option value="clerk">Clerks</option>
-            <option value="accountprocessing">Account Processing</option>
-            <option value="bankofficers">Bank Officers</option>
-        </select>
-	
-        <div id="textbox-container" style="display: none;">
-            <label for="userId">userId:</label>
-            <input type="text" id="userId" name="userId" />
-        </div>
+	<h3 style="text-align: center;">Permissions Management</h3>
+	<form>
+		<label for="role">Select Designation:</label> <select id="role"
+			name="role">
+			<option value="Clerk">Clerk</option>
+			<option value="Account Processing">Account Processing</option>
+			<option value="Bank Officer">Bank Officers</option>
+		</select>
 
-        <div class="checkbox-group">
-            <label for="Accountedit">
-                <input type="checkbox" id="Accountedit" name="Accountedit" th:checked="${permissions.Accountedit}"> Account Edit
-            </label>
-            <label for="Accountdel">
-                <input type="checkbox" id="Accountdel" name="Accountdel" th:checked="${permissions.Accountdel}"> Account Delete
-            </label>
-            <label for="Accountactive">
-                <input type="checkbox" id="Accountactive" name="Accountactive" th:checked="${permissions.Accountactive}"> Account Active
-            </label>
-            <label for="transactions">
-                <input type="checkbox" id="transactions" name="transactions" th:checked="${permissions.transactions}"> Transactions
-            </label>
-            <label for="appforms">
-                <input type="checkbox" id="appforms" name="appforms" th:checked="${permissions.appforms}"> App Forms
-            </label>
-            <label for="security">
-                <input type="checkbox" id="security" name="security" th:checked="${permissions.security}"> Security
-            </label>
-            <label for="accprocessing">
-                <input type="checkbox" id="accprocessing" name="accprocessing" th:checked="${permissions.accprocessing}"> Account Processing
-            </label>
-            <label for="cusedit">
-                <input type="checkbox" id="cusedit" name="cusedit" th:checked="${permissions.cusedit}"> Customer Edit
-            </label>
-            <label for="users">
-                <input type="checkbox" id="users" name="users" th:checked="${permissions.users}"> Users
-            </label>
-        </div>
+		<div class="checkbox-group">
+			<label for="Accountedit"> <input type="checkbox"
+				id="Accountedit" name="Accountedit"
+				th:checked="${permissions.Accountedit}"> Account Edit
+			</label> <label for="Accountdel"> <input type="checkbox"
+				id="Accountdel" name="Accountdel"
+				th:checked="${permissions.Accountdel}"> Account Delete
+			</label> <label for="Accountactive"> <input type="checkbox"
+				id="Accountactive" name="Accountactive"
+				th:checked="${permissions.Accountactive}"> Account Active
+			</label> <label for="transactions"> <input type="checkbox"
+				id="transactions" name="transactions"
+				th:checked="${permissions.transactions}"> Transactions
+			</label> <label for="appforms"> <input type="checkbox" id="appforms"
+				name="appforms" th:checked="${permissions.appforms}"> App
+				Forms
+			</label> <label for="security"> <input type="checkbox" id="security"
+				name="security" th:checked="${permissions.security}">
+				Security
+			</label> <label for="accprocessing"> <input type="checkbox"
+				id="accprocessing" name="accprocessing"
+				th:checked="${permissions.accprocessing}"> Account
+				Processing
+			</label> <label for="cusedit"> <input type="checkbox" id="cusedit"
+				name="cusedit" th:checked="${permissions.cusedit}"> Customer
+				Edit
+			</label> <label for="users"> <input type="checkbox" id="users"
+				name="users" th:checked="${permissions.users}"> Users
+			</label>
+		</div>
 
-        <button id="submit">Submit</button>
-    </form>
+		<button id="submit">Submit</button>
+	</form>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
- var roleDropdown = document.getElementById('role');
-    var textboxContainer = document.getElementById('textbox-container');
-    var checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+	<script>
+		$(document).ready(function() {
+			$("#submit").click(function(event) {
+				event.preventDefault(); // Prevent the default form submission
 
-    roleDropdown.addEventListener('change', function () {
-        if (roleDropdown.value === 'user') {
-            textboxContainer.style.display = 'block';
-        } else {
-            textboxContainer.style.display = 'none';
-        }
-
-        updateCheckboxes();
-    });
-
-    function updateCheckboxes() {
-        checkboxes.forEach(function (checkbox) {
-            if (roleDropdown.value === 'user') {
-                checkbox.checked = false; // Uncheck all checkboxes for user role
-                checkbox.disabled = true; // Disable all checkboxes for user role
-            } else {
-                checkbox.disabled = false; // Enable all checkboxes for other roles
-
-                // Check the checkboxes based on the selected role
-                var permissions = '${permissions}'.toLowerCase(); // Get the permissions from Thymeleaf
-
-                if (permissions.includes(checkbox.name)) {
-                    checkbox.checked = true;
-                } else {
-                    checkbox.checked = false;
-                }
-            }
-        });
-    }
-
-    $(document).ready(function() {
-        updateCheckboxes(); // Call the function initially to set the checkboxes based on the initial dropdown value
+				// Get the permissions from the checkboxes
+				var permissions = {
+				    role = $("#role").val(),
+					Accountedit : $("#Accountedit").is(":checked"),
+					Accountdel : $("#Accountdel").is(":checked"),
+					Accountactive : $("#Accountactive").is(":checked"),
+					transactions : $("#transactions").is(":checked"),
+					appforms : $("#appforms").is(":checked"),
+					security : $("#security").is(":checked"),
+					accprocessing : $("#accprocessing").is(":checked"),
+					cusedit : $("#cusedit").is(":checked"),
+					users : $("#users").is(":checked")
+				};
 
 
-			
-            $('#submit').click(function() {
-                var userId = $('#userId').val();
-                var role = $('#role').val();
-               
-                
-                console.log(cashchest);
-                
-                var Accountedit = $('#Accountedit').is(':checked');
-                var Accountdel = $('#Accountdel').is(':checked');
-                var Accountactive = $('#Accountactive').is(':checked');
-                var transactions = $('#transactions').is(':checked');
-                var appforms = $('#appforms').is(':checked');
-                var security = $('#security').is(':checked');
-                var accprocessing = $('#accprocessing').is(':checked');
-                var cusedit = $('#cusedit').is(':checked');
-                var users = $('#users').is(':checked');
 
-                if (userId) {
-                    // AJAX call with userId, role, and permission data
-                    $.ajax({
-                        url: 'permissionurl',
-                        method: 'POST',
-                        data: {
-                            userId: userId,
-                            role: role,
-                            Accountedit: Accountedit,
-                            Accountdel: Accountdel,
-                            Accountactive: Accountactive,
-                            transactions: transactions,
-                            appforms: appforms,
-                            security: security,
-                            accprocessing: accprocessing,
-                            cusedit: cusedit,
-                            users: users
-                        },
-                        success: function(response) {
-                            // Handle success response
-                        },
-                        error: function(error) {
-                            // Handle error response
-                        }
-                    });
-                } else {
-                    // AJAX call with role and permission data only
-                    $.ajax({
-                        url: 'allpermissionurl',
-                        method: 'POST',
-                        data: {
-                            role: role,
-                            Accountedit: Accountedit,
-                            Accountdel: Accountdel,
-                            Accountactive: Accountactive,
-                            transactions: transactions,
-                            appforms: appforms,
-                            security: security,
-                            accprocessing: accprocessing,
-                            cusedit: cusedit,
-                            users: users
-                        },
-                        success: function(response) {
-                            // Handle success response
-                        },
-                        error: function(error) {
-                            // Handle error response
-                        }
-                    });
-                }
-            });
-        });
-        
-        
-      
-    </script>
+				// Make the AJAX POST request to submit the form data
+				$.ajax({
+					url : "savePermissionData", // Replace "your-submit-url" with the actual endpoint to which you want to submit the data
+					type : "POST", // Change this to the appropriate method (POST/GET) as per your backend requirements
+					data : JSON.stringify(permissions),
+					contentType : "application/json",
+				    dataType: "json", // Add this line
+					success : function(response) {
+						// Handle the success response here
+						console.log("Form submitted successfully!");
+						console.log(response); // You can do something with the response if needed
+					},
+					error : function(error) {
+						// Handle the error response here
+						console.error("Error submitting the form:", error);
+					}
+				});
+			});
+		});
+	</script>
+
 </body>
 </html>

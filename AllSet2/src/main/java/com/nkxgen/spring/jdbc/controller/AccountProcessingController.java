@@ -22,6 +22,7 @@ import com.nkxgen.spring.jdbc.DaoInterfaces.AccountProcessingDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
 import com.nkxgen.spring.jdbc.ViewModels.AccountViewModel;
 import com.nkxgen.spring.jdbc.model.Account;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
 import com.nkxgen.spring.jdbc.model.Permission;
 import com.nkxgen.spring.jdbc.model.Transaction;
@@ -36,15 +37,17 @@ public class AccountProcessingController {
 	private final Accounts ac1;
 	private final AccountProcessingDAO interestCalDao;
 	private final PermissionsDAOInterface permissionsDAO;
+	private BankUser bankUser;
 
 	@Autowired
 	public AccountProcessingController(AccountApplicationDaoInterface ac, ViewInterface v, Accounts ac1,
-			AccountProcessingDAO interestCalDao, PermissionsDAOInterface permissionsDAO) {
+			AccountProcessingDAO interestCalDao, PermissionsDAOInterface permissionsDAO, BankUser bankUser) {
 		this.ac = ac;
 		this.v = v;
 		this.ac1 = ac1;
 		this.interestCalDao = interestCalDao;
 		this.permissionsDAO = permissionsDAO;
+		this.bankUser = bankUser;
 	}
 
 	@RequestMapping(value = "/intrest", method = RequestMethod.GET)
@@ -92,8 +95,8 @@ public class AccountProcessingController {
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		// if (p.isAccountProcessing()) {
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg()); // if (p.isAccountProcessing()) {
 		// Add the updated account list as an attribute to the model
 		model.addAttribute("accounts", l1);
 
@@ -121,8 +124,8 @@ public class AccountProcessingController {
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		// if (p.isAccountProcessing()) {
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg()); // if (p.isAccountProcessing()) {
 		// Add the account view models as an attribute to the model
 		model.addAttribute("accounts", l2);
 
@@ -143,7 +146,8 @@ public class AccountProcessingController {
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		if (accountType.equals("savings")) {
 			// Retrieve accounts from the database based on the specified accountType
 			List<Account> l = ac.getAccountssByType(accountType);
@@ -196,8 +200,8 @@ public class AccountProcessingController {
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		// if (p.isAccountProcessing()) {
 		return "statement-page";
 		// } else {

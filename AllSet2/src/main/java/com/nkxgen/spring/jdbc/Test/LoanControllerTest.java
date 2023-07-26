@@ -36,6 +36,7 @@ import com.nkxgen.spring.jdbc.ViewModels.LoanAccountViewModel;
 import com.nkxgen.spring.jdbc.ViewModels.LoanApplicationViewModel;
 import com.nkxgen.spring.jdbc.ViewModels.LoanViewModel;
 import com.nkxgen.spring.jdbc.controller.LoanController;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
 import com.nkxgen.spring.jdbc.model.Permission;
 
@@ -172,21 +173,24 @@ public class LoanControllerTest {
 		List<LoanApplicationViewModel> filteredList = new ArrayList<>();
 		String username = "1";
 		Permission permission = new Permission();
-		permission.setUserId((long) 1);
+		BankUser bankUser = new BankUser();
+		permission.setRole("Clerk");
 		// permission.setApplication(true);
 
 		// Mock the behavior of the dependencies
 		when(viewInterface.getLoanApplicationByValue(accountType)).thenReturn(list);
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("username")).thenReturn(username);
-		when(permissionsDAO.getPermissions(Long.parseLong(username))).thenReturn(permission);
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		when(permissionsDAO.getPermissions(bankUser.getBusr_desg())).thenReturn(permission);
 
 		// Act
 		String result = loanController.GetLoanApplication(accountType, model, request, response);
 
 		// Assert
 		verify(viewInterface).getLoanApplicationByValue(accountType);
-		verify(permissionsDAO).getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		verify(permissionsDAO).getPermissions(bankUser.getBusr_desg());
 		verify(model).addAttribute(eq("loanApplications"), any(List.class));
 		Assert.assertEquals(result, "loan-approval");
 	}
@@ -197,19 +201,21 @@ public class LoanControllerTest {
 		String accountType = "Savings";
 		String username = "123";
 		Permission permission = new Permission();
-		permission.setUserId((long) 123);
+		BankUser bankUser = new BankUser();
+		permission.setRole("Clerk");
 		// permission.setApplication(false);
 
 		// Mock the behavior of the dependencies
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("username")).thenReturn(username);
-		when(permissionsDAO.getPermissions(Long.parseLong(username))).thenReturn(permission);
-
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		when(permissionsDAO.getPermissions(bankUser.getBusr_desg())).thenReturn(permission);
 		// Act
 		String result = loanController.GetLoanApplication(accountType, model, request, response);
 
 		// Assert
-		verify(permissionsDAO).getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		verify(permissionsDAO).getPermissions(bankUser.getBusr_desg());
 		Assert.assertEquals(result, "not-permitted");
 	}
 
@@ -231,7 +237,7 @@ public class LoanControllerTest {
 
 		Permission p = new Permission();
 		// p.setLoans(true);
-		when(permissionsDAO.getPermissions(123L)).thenReturn(p);
+		when(permissionsDAO.getPermissions("ClerK")).thenReturn(p);
 
 		// Act
 		String result = loanController.GetLoanAccounts(accountType, model, request, response);

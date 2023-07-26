@@ -1,6 +1,7 @@
 package com.nkxgen.spring.jdbc.listeners;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -18,8 +19,17 @@ public class AccountAppApprovalListener {
 
 	@EventListener
 	public void onEvent(AccountAppApprovalEvent event) {
-		auditLogDAO.saveAudit(
-				new AuditLogs(event.getEvent(), new Timestamp(System.currentTimeMillis()), event.getUsername()));
-		System.out.println(event.getEvent());
+		Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        String currentTimestampstr = formatTimestamp(currentTimestamp);
+        AuditLogs auditLog = new AuditLogs(event.getEvent(), currentTimestampstr, event.getUsername());
+        auditLogDAO.saveAudit(auditLog);
 	}
+	
+	 private String formatTimestamp(Timestamp timestamp) {
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	        return dateFormat.format(timestamp);
+
+	    }
+	
+	
 }

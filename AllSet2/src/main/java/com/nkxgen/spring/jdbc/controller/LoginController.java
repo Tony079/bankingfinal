@@ -23,10 +23,12 @@ import com.nkxgen.spring.jdbc.DaoInterfaces.AuditLogDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
 import com.nkxgen.spring.jdbc.Exception.EmailNotFoundException;
+import com.nkxgen.spring.jdbc.Exception.NoRecordFoundException;
 import com.nkxgen.spring.jdbc.ViewModels.GraphModel;
 import com.nkxgen.spring.jdbc.events.LoginEvent;
 import com.nkxgen.spring.jdbc.events.LogoutEvent;
 import com.nkxgen.spring.jdbc.model.AuditLogs;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.LoginModel;
 import com.nkxgen.spring.jdbc.model.Permission;
 import com.nkxgen.spring.jdbc.service.ChartService;
@@ -45,12 +47,14 @@ public class LoginController {
 	private ChartService chartService;
 	private BankUserInterface bankUserService;
 	private ApplicationEventPublisher applicationEventPublisher;
+	private BankUser bankUser;
+
 	LoginModel login = new LoginModel();
 
 	@Autowired
 	public LoginController(ApplicationEventPublisher applicationEventPublisher, HttpSession httpSession,
 			MailSender mailSender, BankUserInterface bankUserService, ChartService chartService,
-			PermissionsDAOInterface permissionsDAO, AuditLogDAO auditLogDAO) {
+			PermissionsDAOInterface permissionsDAO, AuditLogDAO auditLogDAO, BankUser bankUser) {
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.httpSession = httpSession;
 		this.mailSender = mailSender;
@@ -58,6 +62,7 @@ public class LoginController {
 		this.chartService = chartService;
 		this.permissionsDAO = permissionsDAO;
 		this.auditLogDAO = auditLogDAO;
+		this.bankUser = bankUser;
 	}
 
 	@RequestMapping(value = "/graphs", method = RequestMethod.GET)
@@ -95,6 +100,7 @@ public class LoginController {
 		logger.info("Updating password");
 		bankUserService.updatePassword(newPassword, login.getUserID());
 		session.setAttribute("errorMessage", "Successfully Updated Password");
+		mailSender.sendPasswordUpdateEmail(login.getMail());
 		return "redirect:/";
 	}
 
@@ -113,7 +119,7 @@ public class LoginController {
 	@RequestMapping(value = "/enterOTP", method = RequestMethod.GET)
 	public String enterOTP(Locale locale, Model model) {
 		logger.info("Enter OTP page requested");
-		login.setOtp(mailSender.send(login.getMail()));
+		login.setOtp(mailSender.sendOTP(login.getMail()));
 		return "enter-otp";
 	}
 
@@ -194,21 +200,13 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String main_page(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public String main_page(Model model, HttpServletRequest request, HttpServletResponse response)
+			throws NoRecordFoundException {
 		logger.info("Home page requested");
 
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-
-		AuditLogs lastLoggedinList = auditLogDAO.lastLoggedIn(username);
-		model.addAttribute("lastLoggedinList", lastLoggedinList);
-
-		System.out.println("lastloggedinnnnnnnnnnnnnnnnnnn" + lastLoggedinList.getTimestamp());
-
-		model.addAttribute("permissions", p);
-
-		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		Permission p;
 
 		if (username == null) {
 			logger.warn("User not logged in, redirecting to login page");
@@ -216,13 +214,31 @@ public class LoginController {
 			return "redirect:/";
 		}
 
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
+		AuditLogs lastLoggedinList = null;
+		try {
+			lastLoggedinList = auditLogDAO.lastLoggedIn(username);
+			model.addAttribute("lastLoggedinList", lastLoggedinList);
+
+		} catch (NoRecordFoundException ex) {
+			// Handle the NoRecordFoundException here and set the error message
+			String errorMessage = "Hey New User " + username;
+			model.addAttribute("errorMessage", errorMessage);
+		}
+
+		// Add the permissions and lastLoggedinList to the model
+		model.addAttribute("permissions", p);
+
+		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
 		// Add the username as an attribute to the model
 		model.addAttribute("username", username);
 
 		// Publish a LoginEvent with the username
 		logger.info("Publishing LoginEvent for user: {}", username);
 		applicationEventPublisher.publishEvent(new LoginEvent("Logged In", username));
-		model.addAttribute(lastLoggedinList);
+
 		return "bank-home-page"; // Return the view name "bank-home-page" to render the page
 	}
 

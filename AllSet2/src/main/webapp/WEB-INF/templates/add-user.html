@@ -4,6 +4,7 @@
 <title>Bank User Form</title>
 <link rel="stylesheet" type="text/css" href="./css/add-user.css">
 <script type="text/javascript" src="./js/add-user.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/spinner.css">
 </head>
 <body>
 	<div class="form-container">
@@ -26,10 +27,56 @@
 				pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\.[a-z]{2,}$" required>
 
 			<input type="submit" value="Submit"><br>
-			<div id="successMessage"></div>
-		</form>
-	</div>
+			<!-- Add a section to display the message -->
+            <div id="successMessage" style="display: none;"></div>
 
+
+		</form>
+		<!-- Add the spinner overlay here -->
+		<div id="spinner" class="spinner-overlay" style="display: none;">
+			<div class="lds-spinner">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				
+			</div>
+		</div>
+	</div>
+	    <script>
+        // Handle form submission and show spinner overlay
+        $(document).ready(function () {
+            $("#bankUserForm").submit(function (event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+                $("#spinner").show(); // Show the spinner overlay
+                var form = $(this);
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        $("#successMessage").text(response); // Set the response message
+                        $("#successMessage").show(); // Show the response message
+                        $("#spinner").hide(); // Hide the spinner overlay
+                    },
+                    error: function (xhr, status, error) {
+                        $("#successMessage").text("Error occurred. Please try again later.");
+                        $("#successMessage").show();
+                        $("#spinner").hide(); // Hide the spinner overlay
+                    }
+                });
+            });
+        });
+    </script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
+ 		

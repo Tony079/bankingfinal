@@ -36,7 +36,6 @@ public class UserController {
 	private ViewInterface v;
 	Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-
 	@Autowired
 	public UserController(BankUserInterface bankUserService, ApplicationEventPublisher applicationEventPublisher,
 			ViewInterface v, MailSender mailSender) {
@@ -62,8 +61,12 @@ public class UserController {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		mailSender.userAdded(user, username);// Get the username from the session attribute
-		applicationEventPublisher.publishEvent(new BankUserCreationEvent("Bank User Created ", username)); // Publish a Bank User Creation event
-		return ResponseEntity.ok("User Added successfully and Mail is sent"); // Return a response entity indicating successful data submission
+		applicationEventPublisher.publishEvent(new BankUserCreationEvent("Bank User Created ", username)); // Publish a
+																											// Bank User
+																											// Creation
+																											// event
+		String message = "User Added successfully and Mail is sent";
+		return ResponseEntity.ok(message);
 	}
 
 	@RequestMapping(value = "/mainUser", method = RequestMethod.GET)
@@ -85,7 +88,11 @@ public class UserController {
 		bankUserService.saveUser(b); // Save the BankUser object using the bankUserService
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username"); // Get the username from the session
-		applicationEventPublisher.publishEvent(new BankUserDetailsModificationEvent("Bank User Details Modified", username)); // Publish a BankUserDetailsModificationEvent
+		applicationEventPublisher
+				.publishEvent(new BankUserDetailsModificationEvent("Bank User Details Modified", username)); // Publish
+																												// a
+																												// BankUserDetailsModificationEvent
+		mailSender.sendAccountDataModifiedEmail(b.getBusr_email(), b.getBusr_title());
 		return "User data updated successfully"; // Return a success message
 	}
 

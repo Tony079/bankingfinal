@@ -3,6 +3,7 @@ package com.nkxgen.spring.jdbc.Dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.AuditLogDAO;
+import com.nkxgen.spring.jdbc.Exception.NoRecordFoundException;
 import com.nkxgen.spring.jdbc.model.AuditLogs;
 
 @Repository
@@ -49,14 +51,21 @@ public class AuditDAOImpl implements AuditLogDAO {
 
 		// Create a typed query to retrieve all audit logs from the database, ordered by ID in descending order
 		TypedQuery<AuditLogs> query = entityManager.createQuery(
-				"SELECT a FROM AuditLogs a WHERE a.username = :userid ORDER BY a.id DESC ", AuditLogs.class);
+				"SELECT a FROM AuditLogs a WHERE a.username = :userid and a.event = :events ORDER BY a.id DESC ",
+				AuditLogs.class);
 		query.setParameter("userid", userid);
+		query.setParameter("events", "Logged In");
+
 		query.setMaxResults(1); // Set the maximum number of results to 1
-		// Execute the query and return the list of audit logs
-		AuditLogs lastLoggedinList = query.getSingleResult();
-		System.out.println(lastLoggedinList.getTimestamp());
-		// LOGGER.info("Retrieved {} audit logs", ((List<AuditLogs>) lastLoggedinList).size());
-		return lastLoggedinList;
+
+		try {
+			// Execute the query and return the single audit log (or null if no result is found)
+			return query.getSingleResult();
+		} catch (NoResultException ex) {
+			// Handle the situation when there is no record fetched (e.g., log a message, return a default value, etc.)
+			LOGGER.info("No last logged in log found for userid: {}", userid);
+			throw new NoRecordFoundException("No record found for userid: " + userid);
+		}
 	}
 
 }

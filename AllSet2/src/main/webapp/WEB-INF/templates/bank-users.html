@@ -7,6 +7,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./css/bank-users.css">
+    <link rel="stylesheet" type="text/css" href="./css/spinner.css">
 <script type="text/javascript" src="./js/bank-users.js"></script>
 </head>
 <body>
@@ -64,7 +65,7 @@
 												</button>
 											</div>
 											<div class="modal-body">
-												<form method="post"
+												<form  method="post"
 													th:id="'editForm-' + ${bankUser.busr_id}"
 													action="saveUserData">
 													<div class="form-group">
@@ -128,6 +129,24 @@
 			</div>
 		</div>
 	</div>
+	  <!-- Add the spinner overlay here -->
+    <div id="spinner" class="spinner-overlay" style="display: none;">
+        <div class="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+	
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script

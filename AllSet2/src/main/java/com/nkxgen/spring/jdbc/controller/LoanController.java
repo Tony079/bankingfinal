@@ -31,6 +31,7 @@ import com.nkxgen.spring.jdbc.ViewModels.LoanApplicationViewModel;
 import com.nkxgen.spring.jdbc.ViewModels.LoanViewModel;
 import com.nkxgen.spring.jdbc.events.LoanAppApprovalEvent;
 import com.nkxgen.spring.jdbc.events.LoanAppRequestEvent;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
 import com.nkxgen.spring.jdbc.model.Permission;
 
@@ -43,14 +44,16 @@ public class LoanController {
 	private final CustomerDaoInterface cd;
 	private final ViewInterface v;
 	private final PermissionsDAOInterface permissionsDAO;
+	private BankUser bankUser;
 
 	@Autowired
 	public LoanController(LoanApplicationDaoInterface ll, CustomerDaoInterface cd, ViewInterface v,
-			PermissionsDAOInterface permissionsDAO) {
+			PermissionsDAOInterface permissionsDAO, BankUser bankUser) {
 		this.ll = ll;
 		this.cd = cd;
 		this.v = v;
 		this.permissionsDAO = permissionsDAO;
+		this.bankUser = bankUser;
 	}
 
 	@Autowired
@@ -147,10 +150,10 @@ public class LoanController {
 		HttpSession session = request.getSession();
 		List<LoanApplicationViewModel> list1 = new ArrayList<>();
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		// if (p.isApplication()) {
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg()); // if (p.isApplication()) {
 		for (LoanApplicationViewModel l : list) {
-			if (l.getProcessedBy() == p.getUserId()) {
+			if (l.getProcessedBy() ==Integer.parseInt(username)) {
 				list1.add(l);
 			}
 		}
@@ -168,8 +171,8 @@ public class LoanController {
 		List<LoanAccountViewModel> list = v.getLoanAccountsByLoanType(accountType);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		// if (p.isLoans()) {
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg()); // if (p.isLoans()) {
 		model.addAttribute("loanAccounts", list);
 		return "loan-account-details";
 		// } else {

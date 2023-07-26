@@ -10,13 +10,8 @@ import javax.persistence.Table;
 public class Permission {
 
 	@Id
-	@Column(name = "user_id")
-	private Long userId;
-
 	@Column(name = "role")
 	private String role;
-
-	
 
 	@Column(name = "Accountedit")
 	private boolean Accountedit;
@@ -105,11 +100,6 @@ public class Permission {
 	public Permission() {
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-
 	public boolean isAccountedit() {
 		return Accountedit;
 	}
@@ -124,10 +114,6 @@ public class Permission {
 
 	public void setAccountdel(boolean accountdel) {
 		Accountdel = accountdel;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public String getRole() {

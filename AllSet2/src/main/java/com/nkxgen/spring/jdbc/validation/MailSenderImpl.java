@@ -18,13 +18,42 @@ import com.nkxgen.spring.jdbc.model.BankUser;
 
 @Component
 public class MailSenderImpl implements MailSender {
-	public String send(String to_user) {
-		String to = to_user; // Assign the value of the 'to_user' parameter to the 'to' variable
-		String otp = generateOTP(); // Generate a random OTP
-		String subject = "Password Reset"; // Set the email subject
-		String body = "The OTP for the Password Reset: " + otp; // Set the email body
+
+	public String sendOTP(String recipientEmail) {
+		String subject = "One-Time Password (OTP) for Account Verification";
+		String otp = generateOTP();
+		String body = "Dear User,\n\n"
+				+ "Thank you for choosing Hamara Bank. To complete your account verification, please use the following One-Time Password (OTP):\n\n"
+				+ "OTP: " + otp + "\n\n"
+				+ "Please enter this OTP on our website within the next 10 minutes to verify your account. If you did not initiate this request, please ignore this email.\n\n"
+				+ "If you have any questions or need further assistance, please don't hesitate to contact our customer support team.\n\n"
+				+ "Best regards,\n" + "Hamara Bank Support Team";
+
+		sendEmail(recipientEmail, subject, body);
+		return otp;
+	}
+
+	public void sendAccountDataModifiedEmail(String recipientEmail, String username) {
+		String subject = "Account Data Modification Notification";
+		String body = "Dear " + username + ",\n\n"
+				+ "We want to inform you that your account data has been modified on Hamara Bank.\n"
+				+ "If you did not authorize these changes, please contact our customer support immediately to secure your account.\n\n"
+				+ "If you made these changes, you can ignore this email.\n\n" + "Best regards,\n"
+				+ "Hamara Bank Support Team";
+
+		sendEmail(recipientEmail, subject, body);
+	}
+
+	public void sendPasswordUpdateEmail(String toUser) {
+		String to = toUser; // Email address of the recipient
+		String subject = "Password Update Notification"; // Subject of the email
+
+		// Body of the email (customize this as needed)
+		String body = "Dear User,\n\n" + "This is to inform you that your password has been successfully updated.\n"
+				+ "If you did not make this change, please contact our support team immediately.\n\n"
+				+ "Best regards,\n" + "Hamara Bank Support Team";
+
 		sendEmail(to, subject, body); // Invoke the sendEmail method to send the email
-		return otp; // Return the generated OTP
 	}
 
 	public void userAdded(BankUser bankUser, String userID) {

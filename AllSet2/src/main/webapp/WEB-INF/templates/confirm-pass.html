@@ -4,6 +4,7 @@
     <title>Hamara Bank - Create Account</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="./css/confirm-pass.css">
+    <link rel="stylesheet" type="text/css" href="./css/spinner.css">
     <script type="text/javascript" src="./js/confirm-pass.js"></script>
 </head>
 <body>
@@ -26,6 +27,25 @@
             </form>
         </div>
     </div>
+    
+      <!-- Add the spinner overlay here -->
+    <div id="spinner" class="spinner-overlay" style="display: none;">
+        <div class="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         var passwordField = document.getElementById("password");
@@ -70,6 +90,14 @@
                 submitButton.disabled = false; // Enable submit button if passwords match
             }
         }
+     $(document).ready(function () {
+        $("#accountForm").submit(function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            $("#spinner").show(); // Show the spinner overlay
+            this.submit(); // Submit the form
+        });
+        
+     });
     </script>
 </body>
 </html>

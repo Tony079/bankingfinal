@@ -3,6 +3,7 @@
 <head>
     <title>Hamara Bank - Send OTP</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/spinner.css">
     <link rel="stylesheet" type="text/css" href="./css/enter-email.css">
 </head>
 <body>
@@ -19,16 +20,44 @@
                     <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
                 </div>
                 <small class="form-text text-muted">Note: Please enter the email associated with your bank.</small><br>
-                <input type="submit" class="btn btn-primary btn-block" value="Send OTP">
+                <input type="submit" class="btn btn-primary btn-block" value="Send OTP" id="sendOTPBtn">
             </form>
             <br>
             <!-- Add a section to display the message -->
             <div th:if="${session.message}">
                 <p th:text="${session.message}"></p>
             </div>
+        </div>
+    </div>
+
+    <!-- Add the spinner overlay here -->
+    <div id="spinner" class="spinner-overlay" style="display: none;">
+        <div class="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script>
+        // Handle form submission and show spinner overlay
+        $(document).ready(function () {
+            $("#otpForm").submit(function (event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+                $("#spinner").show(); // Show the spinner overlay
+                this.submit(); // Submit the form
+            });
+        });
+    </script>
 </body>
 </html>

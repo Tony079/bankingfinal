@@ -27,6 +27,7 @@ import com.nkxgen.spring.jdbc.Exception.TransactionSaveException;
 import com.nkxgen.spring.jdbc.Exception.TransactionWithdrawlSaveException;
 import com.nkxgen.spring.jdbc.events.TransactionEvent;
 import com.nkxgen.spring.jdbc.model.Account;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
 import com.nkxgen.spring.jdbc.model.LoanAccount;
@@ -44,14 +45,16 @@ public class TransactionController {
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final PermissionsDAOInterface permissionsDAO;
 	private final CustomerSetter s;
+	private BankUser bankUser;
 
 	@Autowired
 	public TransactionController(TransactionsInterface ti, ApplicationEventPublisher applicationEventPublisher,
-			PermissionsDAOInterface permissionsDAO, CustomerSetter s) {
+			PermissionsDAOInterface permissionsDAO, CustomerSetter s, BankUser bankUser) {
 		this.ti = ti;
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.permissionsDAO = permissionsDAO;
 		this.s = s;
+		this.bankUser = bankUser;
 	}
 
 	// Mapping for money deposit form
@@ -63,7 +66,8 @@ public class TransactionController {
 		String username = (String) session.getAttribute("username");
 		LOGGER.info("Handling GET request for /moneyDeposit by user: {}", username);
 
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		if (p.isTransactions()) {
 			LOGGER.info("User {} has permission for transactions. Returning money-deposit view.", username);
 			return "money-deposit";
@@ -82,7 +86,8 @@ public class TransactionController {
 		String username = (String) session.getAttribute("username");
 		LOGGER.info("Handling GET request for /loanRepay by user: {}", username);
 
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		if (p.isTransactions()) {
 			LOGGER.info("User {} has permission for transactions. Returning loan-repayment view.", username);
 			return "loan-repayment";
@@ -101,7 +106,8 @@ public class TransactionController {
 		String username = (String) session.getAttribute("username");
 		LOGGER.info("Handling GET request for /withdrawl by user: {}", username);
 
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		if (p.isTransactions()) {
 			LOGGER.info("User {} has permission for transactions. Returning money-withdrawl-form view.", username);
 			return "money-withdrawl-form";
@@ -120,7 +126,8 @@ public class TransactionController {
 		String username = (String) session.getAttribute("username");
 		LOGGER.info("Handling GET request for /lowid by user: {}", username);
 
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		bankUser = permissionsDAO.getUserById(Long.parseLong(username));
+		Permission p = permissionsDAO.getPermissions(bankUser.getBusr_desg());
 		if (p.isTransactions()) {
 			LOGGER.info("User {} has permission for transactions. Returning loan-withdrawl-form view.", username);
 			return "loan-withdrawl-form";

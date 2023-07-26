@@ -54,12 +54,11 @@
 						name="acap_createdby"></td>
 				</tr>
 				<tr>
-					<td><label for="acap_apdate">Application Date:</label></td>
-					<td><input type="date" id="acap_apdate" name="acap_apdate">
-					</td>
-					<td><label for="acap_createddate">Created Date:</label></td>
-					<td><input type="date" id="acap_createddate"
-						name="acap_createddate"></td>
+			<td><label for="acap_processBy">applicationdate:</label></td>
+				
+           <td><input type="date" id="acap_apdate" name="acap_apdate" min="" /></td>
+           <td><label for="acap_processBy">createdate:</label></td>
+           <td><input type="date" id="acap_createddate" name="acap_createddate" min="" /></td>
 				</tr>
 				<tr>
 					<td><label for="acap_processBy">Process by:</label></td>
@@ -137,11 +136,14 @@
 				</tr>
 			</table>
 			<button type="button" onclick="submit_cutomer_data()">Submit</button>
-		<!-- 	<button type="button" onclick="toggleForms()">Next</button> -->
+			<button type="button" onclick="toggleForms()">Next</button>
 		</form>
 
 	</div>
-<script>
+
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
 	  function validate() {
 	    var dobInput = document.getElementById("cust_dob").value;
 	    var dob = new Date(dobInput);
@@ -160,9 +162,6 @@
 	  document.getElementById("acap_apdate").setAttribute("min", currentDate);
 	  document.getElementById("acap_createddate").setAttribute("min", currentDate);
 	</script>
-
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
