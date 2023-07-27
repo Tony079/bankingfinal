@@ -78,5 +78,5 @@
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
     <mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
     <mvc:resources mapping="/WEB-INF/js/**" location="/WEB-INF/js/" />
-	
+	<mvc:resources mapping="/img/**" location="/WEB-INF/img/" />
 </beans>
