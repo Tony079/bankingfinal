@@ -42,17 +42,12 @@ function submit_application_data() {
 
 		},
 		success: function(response) {
-			$('#successMessage').text(response).fadeIn();
-			setTimeout(function() {
-				$('#successMessage').fadeOut();
-			}, 3000);
-
-			form.trigger('reset'); // Optional: Reset the form after successful submission
-			console.log('First form submitted successfully');
+		alert(' form submitted successfully');
+		loaction.reload();
 
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			console.log('Error occurred while submitting first form:', errorThrown);
+			alert('Error occurred while submitting first form:', errorThrown);
 		}
 
 
@@ -101,11 +96,13 @@ function submit_cutomer_data() {
 		data: formData,
 		success: function(response) {
 			// Handle success response
-			console.log("Form data saved successfully");
+			alert("Form data saved successfully");
+		   loaction.reload();
+			
 		},
 		error: function(xhr, status, error) {
 			// Handle error response
-			console.log("Error occurred while saving form data");
+			alert("Error occurred while saving form data");
 		}
 	});
 }

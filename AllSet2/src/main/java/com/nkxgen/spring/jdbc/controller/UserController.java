@@ -24,6 +24,7 @@ import com.nkxgen.spring.jdbc.InputModels.BankUserInput;
 import com.nkxgen.spring.jdbc.ViewModels.BankUserViewModel;
 import com.nkxgen.spring.jdbc.events.BankUserCreationEvent;
 import com.nkxgen.spring.jdbc.events.BankUserDetailsModificationEvent;
+import com.nkxgen.spring.jdbc.events.UserCredentialsEvent;
 import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.validation.MailSender;
 
@@ -65,6 +66,7 @@ public class UserController {
 																											// Bank User
 																											// Creation
 																											// event
+		applicationEventPublisher.publishEvent(new UserCredentialsEvent("Pennant@123 ", username));
 		String message = "User Added successfully and Mail is sent";
 		return ResponseEntity.ok(message);
 	}

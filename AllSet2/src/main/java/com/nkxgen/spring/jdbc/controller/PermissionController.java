@@ -7,13 +7,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
@@ -55,12 +56,12 @@ public class PermissionController {
 		// }
 	}
 
-	@PostMapping("/savePermissionData")
-	@ResponseBody
-	public ResponseEntity<String> savePermissionData(@RequestBody Permission permissionData) {
+	@RequestMapping(value = "/savePermissionData", method = RequestMethod.POST)
+	public ResponseEntity<String> savePermissionData(Permission permissionData) {
 		try {
 			// Save the permissionData object to the database using the repository
 			permissionsDAO.updatePermissions(permissionData);
+			System.out.println(permissionData);
 			return ResponseEntity.ok("Data saved successfully!");
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Error saving data: " + e.getMessage());
@@ -74,6 +75,25 @@ public class PermissionController {
 		System.out.println("alllll" + permissions);
 		permissionsDAO.allUpdatePermissions(permissions);
 		return ResponseEntity.ok("Customer data updated successfully");
+	}
+
+	@PostMapping("/getPermissions")
+	public ResponseEntity<Permission> getPermissions(@RequestParam("role") String role) {
+		try {
+			// Fetch the permissions for the selected role
+			Permission permissions = permissionsDAO.getPermissions(role);
+
+			if (permissions != null) {
+				// Return the permissions as JSON response
+				return ResponseEntity.ok(permissions);
+			} else {
+				// Return a 404 Not Found response if permissions are not found for the given role
+				return ResponseEntity.notFound().build();
+			}
+		} catch (Exception e) {
+			// Handle any errors that occur during data retrieval
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }

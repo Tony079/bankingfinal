@@ -51,10 +51,11 @@ function submit() {
 		},
 		success: function(resultText) {
 			
-			console.log('First form submitted successfully');
+					alert(' form submitted successfully');
+		            loaction.reload();
 		},
 		error: function(jqXHR, exception) {
-			console.log('Error occurred!');
+			alert('Error occurred!');
 		}
 	});
 }
@@ -108,11 +109,12 @@ function submit2() {
 		success: function(response) {
 			// Handle success response
 			
-			console.log("Form data saved successfully");
+					alert(' form submitted successfully');
+		loaction.reload();
 		},
 		error: function(xhr, status, error) {
 			// Handle error response
-			console.log("Error occurred while saving form data");
+			alert("Error occurred while saving form data");
 		}
 	});
 }

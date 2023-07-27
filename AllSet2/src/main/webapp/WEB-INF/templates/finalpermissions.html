@@ -52,6 +52,12 @@ button[type="submit"] {
 	font-size: 14px;
 	width: auto;
 }
+#changed {
+  display: none;
+  text-align: center;
+  margin-top: 10px;
+  color: #003366; /* Apply the #003366 color to the message */
+}
 </style>
 </head>
 <body>
@@ -96,27 +102,71 @@ button[type="submit"] {
 		</div>
 
 		<button id="submit">Submit</button>
+		<br>
+		<div id ="changed">
+		<h7><b>Changed Successfully!!</b></h7>
+		</div>
 	</form>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<script>
 		$(document).ready(function() {
+			
+			$("#changed").hide();
+			
+			function loadPermissionsForRole(role) {
+				$.ajax({
+					url: "getPermissions", // Replace "getPermissions" with the actual endpoint to fetch permissions from the backend
+					type: "POST",
+					data: { role: role },
+					success: function(permissions) {
+						// Populate the checkboxes based on the received permissions data
+						$("#Accountedit").prop("checked", permissions.Accountedit);
+						$("#Accountdel").prop("checked", permissions.Accountdel);
+						$("#Accountactive").prop("checked", permissions.Accountactive);
+						$("#transactions").prop("checked", permissions.transactions);
+						$("#appforms").prop("checked", permissions.appforms);
+						$("#security").prop("checked", permissions.security);
+						$("#accprocessing").prop("checked", permissions.accprocessing);
+						$("#cusedit").prop("checked", permissions.cusedit);
+						$("#users").prop("checked", permissions.users);
+					},
+					error: function(error) {
+						// Handle the error response here
+						console.error("Error fetching permissions:", error);
+					}
+				});
+			}
+
+			// Initial load of permissions based on the default selected role (e.g., "Clerk")
+			var defaultRole = $("#role").val();
+			loadPermissionsForRole(defaultRole);
+
+			// Handle role selection change
+			$("#role").change(function() {
+				var selectedRole = $(this).val();
+				loadPermissionsForRole(selectedRole);
+			});
+
+			
+			
+			
+			
+			
 			$("#submit").click(function(event) {
 				event.preventDefault(); // Prevent the default form submission
 
 				// Get the permissions from the checkboxes
-				var permissions = {
-				    role = $("#role").val(),
-					Accountedit : $("#Accountedit").is(":checked"),
-					Accountdel : $("#Accountdel").is(":checked"),
-					Accountactive : $("#Accountactive").is(":checked"),
-					transactions : $("#transactions").is(":checked"),
-					appforms : $("#appforms").is(":checked"),
-					security : $("#security").is(":checked"),
-					accprocessing : $("#accprocessing").is(":checked"),
-					cusedit : $("#cusedit").is(":checked"),
-					users : $("#users").is(":checked")
-				};
+				    var role = $("#role").val();
+				    var Accountedit = $('#Accountedit').is(':checked');
+	                var Accountdel = $('#Accountdel').is(':checked');
+	                var Accountactive = $('#Accountactive').is(':checked');
+	                var transactions = $('#transactions').is(':checked');
+	                var appforms = $('#appforms').is(':checked');
+	                var security = $('#security').is(':checked');
+	                var accprocessing = $('#accprocessing').is(':checked');
+	                var cusedit = $('#cusedit').is(':checked');
+	                var users = $('#users').is(':checked');
 
 
 
@@ -124,13 +174,25 @@ button[type="submit"] {
 				$.ajax({
 					url : "savePermissionData", // Replace "your-submit-url" with the actual endpoint to which you want to submit the data
 					type : "POST", // Change this to the appropriate method (POST/GET) as per your backend requirements
-					data : JSON.stringify(permissions),
-					contentType : "application/json",
-				    dataType: "json", // Add this line
-					success : function(response) {
+
+                    data: {
+                        role: role,
+                        Accountedit: Accountedit,
+                        Accountdel: Accountdel,
+                        Accountactive: Accountactive,
+                        transactions: transactions,
+                        appforms: appforms,
+                        security: security,
+                        accprocessing: accprocessing,
+                        cusedit: cusedit,
+                        users: users
+                    },	success : function(response) {
 						// Handle the success response here
-						console.log("Form submitted successfully!");
-						console.log(response); // You can do something with the response if needed
+						$("#changed").show();
+						
+						
+						alert('Changed Successfully');
+						 location.reload();
 					},
 					error : function(error) {
 						// Handle the error response here

@@ -9,6 +9,14 @@ import javax.persistence.Table;
 @Table(name = "permissions")
 public class Permission {
 
+	@Override
+	public String toString() {
+		return "Permission [role=" + role + ", Accountedit=" + Accountedit + ", Accountdel=" + Accountdel
+				+ ", Accountactive=" + Accountactive + ", transactions=" + transactions + ", appforms=" + appforms
+				+ ", security=" + security + ", accprocessing=" + accprocessing + ", cusedit=" + cusedit + ", users="
+				+ users + "]";
+	}
+
 	@Id
 	@Column(name = "role")
 	private String role;
