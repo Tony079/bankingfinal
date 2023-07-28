@@ -1,0 +1,125 @@
+call smi(1007)
+
+select *from gvtrans
+
+insert into gvtrans(accno,tr_date,tr_type,tr_amount) values (1003,'2023-02-10','Credit',5000)
+select * from gvacc
+
+insert into gvacc(accno,accname,op_date,currentbal,tr_type)values (1003,'Tej','2023-02-10',10400,'Savings Account')
+delete from gvtrans where accno in(1007)
+------------------------
+create or replace procedure smi(acc int)
+language plpgsql
+as $$
+declare
+	opd date:= (select op_date from gvacc where accno=acc);
+    ans int:=0;
+    da int;
+    m int;
+    res float;
+    cd date:=(current_date-interval '1 days')::date;
+    sd date:=(current_date- interval '6 month')::date;
+    td date:=(current_date - interval '1 month' + interval '11 day');
+begin
+   if extract(month from current_date) in (6,9) then
+    if opd not between sd and cd then 
+	for i in 1..6 loop
+      --   raise notice '%   %',(td::date - (i-1||'month')::interval)::date   ,(((current_date)::date + interval '1 month' - interval '1 day')- (i ||'month')::interval)::date;
+    	ans =ans + minbal(acc,(td::date - (i-1||'month')::interval)::date,(((current_date)::date + interval '1 month' - interval '1 day')- (i ||'month')::interval)::date);
+      --  raise notice '%',ans;
+   end loop;
+   
+     elsif opd between sd and cd then 
+		da = extract(day from opd);
+	        m=extract(month from age(cd,opd) );      
+
+         if da<=10  then
+         	for i in 1..(m+1)loop
+        		--raise notice '%   %',(td::date - (i-1||'month')::interval)::date  ,(((current_date)::date + interval '1 month' - interval '1 day')- (i ||'month')::interval)::date;
+    			 ans =ans + minbal(acc,(td::date - (i-1||'month')::interval)::date,(((current_date)::date + interval '1 month' - interval '1 day')- (i ||'month')::interval)::date);
+  		end loop;
+
+    
+         elsif da>10  then
+         	for i in 1..(m) loop
+        		--	raise notice '%   %',(td::date - (i-1||'month')::interval)::date   ,(((current_date)::date + interval '1 month' - interval '1 day')- (i ||'month')::interval)::date;
+    			     ans =ans + minbal(acc,(td::date - (i-1||'month')::interval)::date,(((current_date)::date + interval '1 month' - interval '1 day')- (i ||'month')::interval)::date);
+  		    end loop;
+        end if;
+     end if;
+         res = (ans*0.5*4.2)/100;
+         raise notice '%',res;
+          update gvacc set currentbal=currentbal+res where accno=acc;
+    end if;
+end;
+$$
+  -------------------------------------------
+  select minbal(1001,'2002-04-20'::date,'2002-04-27'::date)
+  
+--   DROP FUNCTION IF EXISTS minbal (integer,date,date);
+
+  
+  create or replace function minbal(acc in int,start date,en date)
+returns int
+
+as $$ 
+declare 
+
+	c_minbal cursor for select tr_type,tr_amount from gvtrans where tr_date between start and en order by tr_date desc; 
+    tt varchar(20);
+    ta int;
+	amnt int;
+    min int ;
+begin
+	open c_minbal;
+     amnt:=(select botd(acc,(en + interval '1 day')::date));
+     min:=amnt;
+    loop
+    	fetch c_minbal into tt,ta;
+        exit when not found;
+            if tt='Credit' then
+            	amnt=amnt-ta;
+            elsif tt='Withdraw'then
+           		 amnt=amnt+ta;
+            end if;
+            
+      		if min>amnt then
+       		 min:=amnt;
+      		end if;
+     end loop;
+  	   close c_minbal;
+     return min;
+end;
+$$ language plpgsql
+
+---------------------------------------------------------
+create or replace function botd(ac int,d date)
+returns int
+language plpgsql
+as $$
+declare 
+	c_botd cursor for select tr_date,tr_type,tr_amount from gvtrans where gvtrans.accno=ac  order by tr_date desc;
+    td date;
+    tt varchar(20);
+    ta int;
+    cb int:= (select currentbal from gvacc where accno=ac);
+begin
+	 open c_botd;
+	 loop
+       fetch c_botd into td,tt,ta;
+       exit when not found;
+       if td>d then
+      	 if tt='Credit' then
+      	 cb=cb-ta;
+      	 elsif tt='Withdraw' then
+      	 cb=cb+ta;
+        end if;
+       end if;
+      end loop;
+     close c_botd;
+     return cb;
+end;
+$$;
+
+
+
