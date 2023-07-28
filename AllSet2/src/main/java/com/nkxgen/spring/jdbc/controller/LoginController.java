@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.nkxgen.spring.jdbc.DaoInterfaces.AuditLogDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
+import com.nkxgen.spring.jdbc.DaoInterfaces.UserCredentialsDAO;
 import com.nkxgen.spring.jdbc.Exception.EmailNotFoundException;
 import com.nkxgen.spring.jdbc.Exception.NoRecordFoundException;
 import com.nkxgen.spring.jdbc.ViewModels.GraphModel;
@@ -31,8 +32,10 @@ import com.nkxgen.spring.jdbc.model.AuditLogs;
 import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.LoginModel;
 import com.nkxgen.spring.jdbc.model.Permission;
+import com.nkxgen.spring.jdbc.model.UserCredentials;
 import com.nkxgen.spring.jdbc.service.ChartService;
 import com.nkxgen.spring.jdbc.validation.MailSender;
+import com.nkxgen.spring.jdbc.validation.PasswordEncoder;
 
 @Controller
 public class LoginController {
@@ -46,6 +49,8 @@ public class LoginController {
 	private HttpSession httpSession;
 	private ChartService chartService;
 	private BankUserInterface bankUserService;
+	private UserCredentialsDAO userCredentialsDAO;
+	private PasswordEncoder passwordEncoder;
 	private ApplicationEventPublisher applicationEventPublisher;
 	private BankUser bankUser;
 
@@ -54,7 +59,8 @@ public class LoginController {
 	@Autowired
 	public LoginController(ApplicationEventPublisher applicationEventPublisher, HttpSession httpSession,
 			MailSender mailSender, BankUserInterface bankUserService, ChartService chartService,
-			PermissionsDAOInterface permissionsDAO, AuditLogDAO auditLogDAO, BankUser bankUser) {
+			PermissionsDAOInterface permissionsDAO, AuditLogDAO auditLogDAO, BankUser bankUser,
+			UserCredentialsDAO userCredentialsDAO, PasswordEncoder passwordEncoder) {
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.httpSession = httpSession;
 		this.mailSender = mailSender;
@@ -63,6 +69,8 @@ public class LoginController {
 		this.permissionsDAO = permissionsDAO;
 		this.auditLogDAO = auditLogDAO;
 		this.bankUser = bankUser;
+		this.userCredentialsDAO = userCredentialsDAO;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@RequestMapping(value = "/graphs", method = RequestMethod.GET)
@@ -98,7 +106,12 @@ public class LoginController {
 	@RequestMapping(value = "/updatedPassword", method = RequestMethod.POST)
 	public String updatedPassword(@RequestParam("password") String newPassword, HttpSession session) {
 		logger.info("Updating password");
-		bankUserService.updatePassword(newPassword, login.getUserID());
+		UserCredentials userCredentials = new UserCredentials();
+		userCredentials.setUsername(String.valueOf(login.getUserID()));
+		String hashedPassword = passwordEncoder.hashPassword(newPassword);
+		userCredentials.setPassword(hashedPassword);
+
+		userCredentialsDAO.updateUserCredentials(userCredentials);
 		session.setAttribute("errorMessage", "Successfully Updated Password");
 		mailSender.sendPasswordUpdateEmail(login.getMail());
 		return "redirect:/";

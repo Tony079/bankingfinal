@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel;
 
 @Entity
-@Table(name = "CustomertrailTable")
+@Table(name = "CustomertrailTabless")
 public class Customertrail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

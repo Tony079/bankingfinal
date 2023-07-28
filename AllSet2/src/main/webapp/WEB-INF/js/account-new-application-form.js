@@ -43,7 +43,20 @@ function submit_application_data() {
 		},
 		success: function(response) {
 		alert(' form submitted successfully');
-		loaction.reload();
+	document.getElementById('acap_nominee_fn').value = "";
+      document.getElementById('acap_nominee_ln').value = "";
+      document.getElementById('acap_cust_id').value = "";
+      document.getElementById('acap_apdate').value = "";
+      document.getElementById('acap_acty_id').value = "";
+      document.getElementById('acap_createdby').value = "";
+      document.getElementById('acap_createddate').value = "";
+      document.getElementById('acap_processBy').value = "";
+      document.getElementById('aadhar').value = "";
+      document.getElementById('pan').value = "";
+      document.getElementById('passport').value = "";
+      document.getElementById('driving').value = "";
+      document.getElementById('jobcard').value = "";
+		
 
 		},
 		error: function(jqXHR, textStatus, errorThrown) {

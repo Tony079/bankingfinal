@@ -3,7 +3,6 @@
 <head>
 <title>Bank User Form</title>
 <link rel="stylesheet" type="text/css" href="./css/add-user.css">
-<script type="text/javascript" src="./js/add-user.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/spinner.css">
 </head>
 <body>
@@ -75,6 +74,11 @@
                 });
             });
         });
+    	$('#busr_desg').change(function() {
+    		if ($(this).val() !== "") {
+    			$(this).find('option:first').attr('disabled', 'disabled').hide();
+    		}
+    	});
     </script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>

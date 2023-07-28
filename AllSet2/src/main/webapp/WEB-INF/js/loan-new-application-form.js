@@ -52,7 +52,25 @@ function submit() {
 		success: function(resultText) {
 			
 					alert(' form submitted successfully');
-		            loaction.reload();
+					  document.getElementById("apcust_id").value = "";
+					  document.getElementById("apdate").value = "";
+					  document.getElementById("lnty_id").value = "";
+					  document.getElementById("amount").value = "";
+					  document.getElementById("intrest").value = "";
+					  document.getElementById("emilimitfrom").value = "";
+					  document.getElementById("emilimitto").value = "";
+					  document.getElementById("tenure_requested").value = "";
+					  document.getElementById("nominee").value = "";
+					  document.getElementById("createdby").value = "";
+					  document.getElementById("createddate").value = "";
+					  document.getElementById("processedby").value = "";
+					  document.getElementById("processdate").value = "";
+					  document.getElementById("processedstatus").value = "";
+					  document.getElementById("luudate").value = "";
+					  document.getElementById("luuser").value = "";
+					  document.getElementById("status").value = "";
+					  document.getElementById("remarks").value = "";
+					  document.getElementById("attachment").value = "";
 		},
 		error: function(jqXHR, exception) {
 			alert('Error occurred!');

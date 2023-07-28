@@ -66,7 +66,8 @@ public class UserController {
 																											// Bank User
 																											// Creation
 																											// event
-		applicationEventPublisher.publishEvent(new UserCredentialsEvent("Pennant@123 ", username));
+		applicationEventPublisher
+				.publishEvent(new UserCredentialsEvent("Pennant@123", String.valueOf(user.getBusr_id())));
 		String message = "User Added successfully and Mail is sent";
 		return ResponseEntity.ok(message);
 	}

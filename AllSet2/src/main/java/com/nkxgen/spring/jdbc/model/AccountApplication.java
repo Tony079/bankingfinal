@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import com.nkxgen.spring.jdbc.InputModels.AccountApplicationInput;
 
 @Entity
-@Table(name = "accountApplicationsTable")
+@Table(name = "accountApplicationsTabless")
 public class AccountApplication {
 
 	@Id

@@ -72,3 +72,12 @@ h2 {
 	text-align: center;
 	margin-top: 20px;
 }
+button {
+    padding: 6px 10px;
+    background-color: rgb(0, 128, 192); /* Change to your desired green color */
+    color: white; /* Change to your desired text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountProcessingDAO;
-import com.nkxgen.spring.jdbc.controller.LoanController;
 import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.cashChest;
 
@@ -26,75 +25,75 @@ public class Intrestcaluclation implements Accounts {
 	long thismonthintrest = 0;
 	@Autowired
 	private AccountProcessingDAO interestCalDao;
-private final	Logger LOGGER = LoggerFactory.getLogger(Intrestcaluclation.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(Intrestcaluclation.class);
 
 	@Override
 	public List<Account> calcIntrst(List<Account> amnt) {
 		LOGGER.info("Calculating interest for accounts");
 
-	    int period = 1;
-	    List<Account> newlist = new ArrayList<>();
+		int period = 1;
+		List<Account> newlist = new ArrayList<>();
 
-	    for (Account a : amnt) {
-	        String type = a.getAccountTypeId();
-	        long amount = a.getBalance();
+		for (Account a : amnt) {
+			String type = a.getAccountTypeId();
+			long amount = a.getBalance();
 
-	        double FDintrstRate = (amount * 4 / 12) / 100; // Calculate the interest rate
+			double FDintrstRate = (amount * 8 / 12) / 100; // Calculate the interest rate
 
-	        if (a.getCount() == 4) {
-	            a.setCount(0);
-	            a.setBalance(a.getIntrest() + (long) FDintrstRate); // Add the interest to the account balance
-	            a.setIntrest(0);
+			if (a.getCount() == 4) {
+				a.setCount(0);
+				a.setBalance(a.getIntrest() + (long) FDintrstRate); // Add the interest to the account balance
+				a.setIntrest(0);
 
-	            LocalDate currentDate = LocalDate.now();
-	            String dateString1 = currentDate.toString();
-	            a.setLastUpdate(dateString1); // Set the last update date to the current date
+				LocalDate currentDate = LocalDate.now();
+				String dateString1 = currentDate.toString();
+				a.setLastUpdate(dateString1); // Set the last update date to the current date
 
-	            LOGGER.debug("Interest calculated for account - Account ID: {}, Balance: {}, Interest Rate: {}, Updated Balance: {}",
-	                    a.getAccountTypeId(), amount, FDintrstRate, a.getBalance());
-	        } else {
-	            a.setIntrest((long) FDintrstRate); // Set the interest for the account
-	            a.setCount(1); // Increment the count
-	            LocalDate currentDate = LocalDate.now();
-	            String dateString1 = currentDate.toString();
-	            a.setLastUpdate(dateString1); // Set the last update date to the current date
+				LOGGER.debug(
+						"Interest calculated for account - Account ID: {}, Balance: {}, Interest Rate: {}, Updated Balance: {}",
+						a.getAccountTypeId(), amount, FDintrstRate, a.getBalance());
+			} else {
+				a.setIntrest((long) FDintrstRate); // Set the interest for the account
+				a.setCount(1); // Increment the count
+				LocalDate currentDate = LocalDate.now();
+				String dateString1 = currentDate.toString();
+				a.setLastUpdate(dateString1); // Set the last update date to the current date
 
-	            LOGGER.debug("Interest calculated for account - Account ID: {}, Balance: {}, Interest Rate: {}, Count: {}",
-	                    a.getAccountTypeId(), amount, FDintrstRate, a.getCount());
-	        }
+				LOGGER.debug(
+						"Interest calculated for account - Account ID: {}, Balance: {}, Interest Rate: {}, Count: {}",
+						a.getAccountTypeId(), amount, FDintrstRate, a.getCount());
+			}
 
-	        newlist.add(a); // Add the updated account to the new list
-	    }
+			newlist.add(a); // Add the updated account to the new list
+		}
 
-	    LOGGER.info("Interest calculation completed");
-	    return newlist; // Return the new list with updated accounts
+		LOGGER.info("Interest calculation completed");
+		return newlist; // Return the new list with updated accounts
 	}
-
 
 	public void setcashChest(cashChest c) {
 		LOGGER.info("Setting cashChest account interest");
 
-	    List<Account> l = interestCalDao.getthisMonthIntrest();
-	    LocalDate currentDate = LocalDate.now(); // Get the current date
+		List<Account> l = interestCalDao.getthisMonthIntrest();
+		LocalDate currentDate = LocalDate.now(); // Get the current date
 
-	    for (Account a : l) {
-	        if (a.getLastUpdate().equals("")) {
-	            continue;
-	        } else {
-	            LocalDate ld = LocalDate.parse(a.getLastUpdate());
-	            if (currentDate.getYear() == ld.getYear() && currentDate.getMonthValue() == ld.getMonthValue()) {
-	                thismonthintrest = thismonthintrest + a.getIntrest();
-	            }
-	        }
-	    }
+		for (Account a : l) {
+			if (a.getLastUpdate().equals("")) {
+				continue;
+			} else {
+				LocalDate ld = LocalDate.parse(a.getLastUpdate());
+				if (currentDate.getYear() == ld.getYear() && currentDate.getMonthValue() == ld.getMonthValue()) {
+					thismonthintrest = thismonthintrest + a.getIntrest();
+				}
+			}
+		}
 
-	    LOGGER.debug("Calculated total interest for this month: {}", thismonthintrest);
+		LOGGER.debug("Calculated total interest for this month: {}", thismonthintrest);
 
-	    c.setaccountinterest(thismonthintrest); // Set the account interest for the cashChest object
-	    thismonthintrest = 0; // Reset the thismonthintrest variable to 0
+		c.setaccountinterest(thismonthintrest); // Set the account interest for the cashChest object
+		thismonthintrest = 0; // Reset the thismonthintrest variable to 0
 
-	    LOGGER.info("CashChest account interest set");
+		LOGGER.info("CashChest account interest set");
 	}
-
 
 }

@@ -8,136 +8,136 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "LoanTransactions")
+@Table(name = "LoanTransactionss")
 public class LoanTransactions {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="tran_id")
-    private int tran_id;
-    
-    @Column(name = "processedBy")
-    private int processedBy;
-    
-    @Column(name = "tran_loan_id")
-    private int loanId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "tran_id")
+	private int tran_id;
 
-    @Column(name = "emi")
-    private double emi;
+	@Column(name = "processedBy")
+	private int processedBy;
 
-    @Column(name = "interest")
-    private double interest;
-    
-   @Column(name="tran_type")
-   private String type;
+	@Column(name = "tran_loan_id")
+	private int loanId;
 
-    @Column(name = "total")
-    private double total;
+	@Column(name = "emi")
+	private double emi;
 
-    @Column(name = "amount")
-    private double amount;
+	@Column(name = "interest")
+	private double interest;
 
-    @Column(name = "complete")
-    private double complete;
+	@Column(name = "tran_type")
+	private String type;
 
-    @Column(name = "date")
-    private String date;
+	@Column(name = "total")
+	private double total;
 
-    @Column(name = "installment_no")
-    private int installmentNo;
-    
+	@Column(name = "amount")
+	private double amount;
 
-    public LoanTransactions() {
+	@Column(name = "complete")
+	private double complete;
 
-    }
-    //=====getters==================
+	@Column(name = "date")
+	private String date;
 
-    public int getLoanId() {
-        return loanId;
-    }
-    
-    public double getEmi() {
-        return emi;
-    }
+	@Column(name = "installment_no")
+	private int installmentNo;
 
-    public double getInterest() {
-        return interest;
-    }
-    public double getTotal() {
-        return total;
-    }
+	public LoanTransactions() {
 
-    public double getAmount() {
-        return amount;
-    }
-    
-    public double getComplete() {
-        return complete;
-    }
-    public String getDate() {
-        return date;
-    }
-    public int getInstallmentNo() {
-        return installmentNo;
-    }
-    public int getTran_id() {
-        return tran_id;
-    }
+	}
+	// =====getters==================
 
-    public int getProcessedBy() {
-        return processedBy;
-    }
+	public int getLoanId() {
+		return loanId;
+	}
 
-    public String getType() {
-        return type;
-    }
-    
-    //settersss
+	public double getEmi() {
+		return emi;
+	}
 
-    
-    public void setLoanId(int loanId) {
-        this.loanId = loanId;
-    }
+	public double getInterest() {
+		return interest;
+	}
 
-    public void setEmi(double emi) {
-        this.emi = emi;
-    }
+	public double getTotal() {
+		return total;
+	}
 
-    
-    public void setInterest(double interest) {
-        this.interest = interest;
-    }
+	public double getAmount() {
+		return amount;
+	}
 
+	public double getComplete() {
+		return complete;
+	}
 
-    public void setTotal(double total) {
-        this.total = total;
-    }
+	public String getDate() {
+		return date;
+	}
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+	public int getInstallmentNo() {
+		return installmentNo;
+	}
 
-    public void setComplete(double complete) {
-        this.complete = complete;
-    }
+	public int getTran_id() {
+		return tran_id;
+	}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+	public int getProcessedBy() {
+		return processedBy;
+	}
 
-    public void setInstallmentNo(int installmentNo) {
-        this.installmentNo = installmentNo;
-    }
-    
-    public void setTran_id(int tran_id) {
-        this.tran_id = tran_id;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setProcessedBy(int processedBy) {
-        this.processedBy = processedBy;
-    }
+	// settersss
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setLoanId(int loanId) {
+		this.loanId = loanId;
+	}
+
+	public void setEmi(double emi) {
+		this.emi = emi;
+	}
+
+	public void setInterest(double interest) {
+		this.interest = interest;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public void setComplete(double complete) {
+		this.complete = complete;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public void setInstallmentNo(int installmentNo) {
+		this.installmentNo = installmentNo;
+	}
+
+	public void setTran_id(int tran_id) {
+		this.tran_id = tran_id;
+	}
+
+	public void setProcessedBy(int processedBy) {
+		this.processedBy = processedBy;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

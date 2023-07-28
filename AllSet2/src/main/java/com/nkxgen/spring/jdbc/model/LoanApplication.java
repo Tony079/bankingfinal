@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import com.nkxgen.spring.jdbc.InputModels.LoanApplicationInput;
 
 @Entity
-@Table(name = "LoanApplication")
+@Table(name = "LoanApplicationss")
 public class LoanApplication {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -66,8 +66,8 @@ public class MailSenderImpl implements MailSender {
 				+ "As you embark on this exciting journey with us, we want you to know that we are committed to fostering a positive and inclusive work environment. We encourage open communication, collaboration, and personal growth, ensuring that you have all the support and resources needed to thrive in your role.\n\n"
 				+ "Please take the time to familiarize yourself with our organization's values, goals, and the services we offer. We believe that together, we can make a significant impact in the lives of our customers and the communities we serve.\n\n"
 				+ "Once again, welcome to Hamara Bank!\n\n" + "Here are your login details:\n" + "Username: "
-				+ bankUser.getBusr_id() + "\n" + "Password: " + bankUser.getBusr_pwd() + "\n\n" + "Best regards,\n"
-				+ userID + "\n" + bankUser.getBusr_desg() + "\n" + "Hamara Bank";
+				+ bankUser.getBusr_id() + "\n" + "Password: " + "Pennant@123" + "\n\n" + "Best regards,\n" + userID
+				+ "\n" + bankUser.getBusr_desg() + "\n" + "Hamara Bank";
 
 		sendEmail(to, subject, body); // Invoke the sendEmail method to send the email
 	}

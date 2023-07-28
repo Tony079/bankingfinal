@@ -12,12 +12,7 @@ body {
 	align-items: center;
 }
 
-#content {
-	padding: 20px;
-	background-color: #003366;
-	color: #fff;
-	border-radius: 20px;
-}
+
 
 .form-group {
 	margin-bottom: 20px;

@@ -112,9 +112,9 @@ public class setEntityToView implements ViewInterface {
 
 		for (LoanApplication l : list) {
 			LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel
-																			// object
+			System.out.println(l.getCustId().getId());																// object
 			Customertrail c = cd.getCustomerById(l.getCustId().getId()); // Fetch the Customertrail association eagerly
-
+		
 			la.copyFromEntity(l, c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
 										// object
 			viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list

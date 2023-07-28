@@ -8,4 +8,6 @@ public interface UserCredentialsDAO {
 
 	void saveUserCredentials(UserCredentials userCredentials);
 
+	void updateUserCredentials(UserCredentials userCredentials);
+
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.nkxgen.spring.jdbc.InputModels.AccountInput;
 
 @Entity
-@Table(name = "AccountsTable")
+@Table(name = "AccountsTabless")
 public class Account {
 	@Id
 	@Column(name = "account_id")

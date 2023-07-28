@@ -154,7 +154,9 @@ public class CustomerSetter {
 
 			String s1 = typee;
 			String s2 = "Personal";
-			if (s1.equals(s2)) {
+			String s3 = "personal";
+
+			if (s1.equals(s2) || s1.equals(s3)) {
 				double value1 = ((lamount * duration * ir) / (100 * 12 * duration));
 				return Math.round(value1 * 100) / 100.0f;
 			} else {
@@ -237,7 +239,9 @@ public class CustomerSetter {
 	public static int complete(int duration, double damount, double lamount, double ir, String typee, int noi) {
 		String s1 = typee;
 		String s2 = "Personal";
-		if (s1.equals(s2)) {
+		String s3 = "personal";
+
+		if (s1.equals(s2) || s1.equals(s3)) {
 
 			double value1 = (double) ((((lamount * duration * ir) / 100) + lamount) / (12 * duration))
 					* (double) (noi - calPM(damount, lamount, duration));

@@ -142,13 +142,13 @@ public class PdfGenerator implements Generator {
 
 			// Add table rows with transaction data
 			for (Transaction transaction : transactionList) {
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_id())));
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_anct_id())));
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_date())));
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_type())));
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_mode())));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_id()))));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_anct_id()))));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_date()))));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_type()))));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_mode()))));
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_amount()))));
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_processedby())));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_processedby()))));
 			}
 
 			// Add the table to the document
@@ -248,9 +248,9 @@ public class PdfGenerator implements Generator {
 			table.addCell(headingCell);
 			// Add table rows with transaction data
 			for (LoanTransactions transaction : transactionList) {
-				table.addCell(new PdfPCell(new Phrase(transaction.getTran_id())));
-				table.addCell(new PdfPCell(new Phrase(transaction.getProcessedBy())));
-				table.addCell(new PdfPCell(new Phrase(transaction.getLoanId())));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getTran_id()))));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getProcessedBy()))));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getLoanId()))));
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getEmi()))));
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getInterest()))));
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getType()))));
@@ -258,7 +258,7 @@ public class PdfGenerator implements Generator {
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getAmount()))));
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getComplete()))));
 				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getDate()))));
-				table.addCell(new PdfPCell(new Phrase(transaction.getInstallmentNo())));
+				table.addCell(new PdfPCell(new Phrase(String.valueOf(transaction.getInstallmentNo()))));
 			}
 
 			// Add the table to the document
